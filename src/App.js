@@ -1,5 +1,7 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { Button, Link } from "@mui/material";
+import { AlertDialogSlide } from "./myDialogTest";
 
 function App() {
   return (
@@ -15,8 +17,12 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn React in Pippo Website! con aiutopcamico!
+          <Link variant="contained" href="https://dev.andreafelappi.it">
+            Hello World
+          </Link>
         </a>
+        <AlertDialogSlide></AlertDialogSlide>
       </header>
     </div>
   );
