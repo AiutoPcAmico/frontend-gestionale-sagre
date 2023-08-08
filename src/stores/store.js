@@ -6,7 +6,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import sessionInfo from "./sessionInfo";
 
 const persistConfig = {
-  key: "root",
+  key: "sagre",
   storage,
 };
 

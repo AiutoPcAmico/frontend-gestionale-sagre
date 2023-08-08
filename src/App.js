@@ -7,10 +7,6 @@ import { useState } from "react";
 import { RouterHandler } from "./routes/RouterHandler";
 
 function App() {
-  var name = "Andrea";
-
-  const [pageOpened, setPageOpened] = useState("home");
-
   return (
     <div className="App">
       <NavigationBar></NavigationBar>
