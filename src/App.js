@@ -1,29 +1,23 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { Button, Link } from "@mui/material";
+
 import { AlertDialogSlide } from "./myDialogTest";
+import { NavigationBar } from "./components/navigation/navigationBar";
+import { Counter } from "./components/Counter";
+import { useState } from "react";
+import { RouterHandler } from "./routes/RouterHandler";
 
 function App() {
+  var name = "Andrea";
+
+  const [pageOpened, setPageOpened] = useState("home");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React in Pippo Website! con aiutopcamico!
-          <Link variant="contained" href="https://dev.andreafelappi.it">
-            Hello World
-          </Link>
-        </a>
-        <AlertDialogSlide></AlertDialogSlide>
-      </header>
+      <NavigationBar></NavigationBar>
+
+      <AlertDialogSlide></AlertDialogSlide>
+      <Counter></Counter>
+      <RouterHandler></RouterHandler>
     </div>
   );
 }
