@@ -1,0 +1,26 @@
+.pages {
+  .loginPage {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    flex-grow: 1 2;
+  }
+
+  .loginPage .item {
+    background: cornsilk;
+    padding: 5px;
+    margin: 20px 20px 20px 20px;
+    color: black;
+    text-align: center;
+    border-radius: 30px;
+    padding: 20px;
+  }
+  .loginPage .item .row {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    flex: auto 3;
+    margin-top: 10px;
+  }
+}
