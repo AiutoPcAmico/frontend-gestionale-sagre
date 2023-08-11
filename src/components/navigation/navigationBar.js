@@ -1,4 +1,3 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,8 +10,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { useEffect, useState } from "react";
 
 import logo_parrocchia from "../../images/logo_parrocchia.png";
+import { useSelector } from "react-redux";
+import { deepOrange } from "@mui/material/colors";
 
 const pages = [
   "Cucina",
@@ -23,11 +25,12 @@ const pages = [
   "Bancone",
   "Cassa",
 ];
-const settings = ["Profilo", "Logout"];
 
 function NavigationBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [settings, setSettings] = useState([]);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const user = useSelector((state) => state.sessionInfo.user);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -43,6 +46,11 @@ function NavigationBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  useEffect(() => {
+    if (user.username) setSettings(["Profilo", "Logout"]);
+    else setSettings(["Login"]);
+  }, [user]);
 
   return (
     <AppBar position="static">
@@ -144,10 +152,24 @@ function NavigationBar() {
             ))}
           </Box>
 
+          <Typography textAlign="center" sx={{ marginRight: "10px" }}>
+            {user.username}
+          </Typography>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="LoggedUser" src="" />
+                {user.username && (
+                  <Avatar
+                    alt="LoggedUser"
+                    sx={{ bgcolor: deepOrange[500] }}
+                    src=""
+                  >
+                    {user.username.charAt(0)}
+                  </Avatar>
+                )}
+                {!user.username && (
+                  <Avatar alt="Not logged user" src=""></Avatar>
+                )}
               </IconButton>
             </Tooltip>
             <Menu
