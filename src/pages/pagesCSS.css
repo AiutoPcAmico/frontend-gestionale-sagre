@@ -2,7 +2,7 @@
   .loginPage {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: center;
     flex-grow: 1 2;
   }
 
@@ -14,6 +14,8 @@
     text-align: center;
     border-radius: 30px;
     padding: 20px;
+    max-width: 400px;
+    justify-content: center;
   }
   .loginPage .item .row {
     display: flex;
@@ -22,5 +24,9 @@
     justify-content: flex-start;
     flex: auto 3;
     margin-top: 10px;
+  }
+
+  .loginPage .logo {
+    width: 65%;
   }
 }

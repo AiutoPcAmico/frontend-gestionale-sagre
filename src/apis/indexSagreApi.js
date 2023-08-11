@@ -31,8 +31,7 @@ function retrieveErrors(statusCode, data) {
     case 403:
       //user not authorizated (or not found)
       isError = true;
-      messageError =
-        "Username o Password errati, o l'utente non è autorizzato all'accesso.\nRiprova";
+      messageError = "Username o Password errati.\nRiprova";
       break;
 
     case 404:
@@ -90,6 +89,7 @@ const postLogin = async (username, password) => {
     });
     return retrieveErrors(response.status, response.data);
   } catch (error) {
+    console.log({ error });
     return retrieveErrors(error.response.status, error.response.data.result);
   }
 };

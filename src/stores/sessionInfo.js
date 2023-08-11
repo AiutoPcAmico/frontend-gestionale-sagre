@@ -14,16 +14,15 @@ export const sessionInfo = createSlice({
   reducers: {
     setSessionDetails: (state, actions) => {
       //check if i have already the item in the array
-      console.log(actions.payload.sessionStarted);
       state.sessionStarted = actions.payload.sessionStarted;
       state.sessionExpire = actions.payload.sessionExpire;
       state.sessionToken = actions.payload.sessionToken;
     },
 
     setSessionUser: (state, actions) => {
-      var modifiedUser = JSON.parse(JSON.stringify(actions.payload.user));
-      state.user.username = modifiedUser.username;
-      state.user.role = modifiedUser.role;
+      console.log(actions.payload);
+      state.user.username = actions.payload.username;
+      state.user.role = actions.payload.role;
 
       console.log({ actions });
     },

@@ -1,44 +1,77 @@
 import { useEffect, useState } from "react";
-import Link from "@mui/material/Link";
+import { Alert, Box, Button, TextField } from "@mui/material";
+
 import "./pagesCSS.css";
-
-import Typography from "@mui/material/Typography";
-import { Box, Button, TextField } from "@mui/material";
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="white" align="center" {...props}>
-      {"Copyright © "}
-      <Link color="inherit" href="https://aiutopcamico.altervista.org/">
-        Andrea Felappi
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import logo_parrocchia from "../images/logo_parrocchia.png";
+import { postLogin } from "../apis/indexSagreApi";
+import { Copyright } from "../components/Copyright";
+import { useDispatch } from "react-redux";
+import { setSessionDetails, setSessionUser } from "../stores/sessionInfo";
+import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import { SnackMessage } from "../components/SnackMessage";
+import { waitforme } from "../utils/waitForMe";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 function SignIn() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [snackOpened, setSnackOpened] = useState(false);
   const [disabledLogin, setDisabledLogin] = useState(true);
+  const [errorLogin, setErrorLogin] = useState(
+    "Immetti nome utente e password!"
+  );
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
   });
 
-  function callLogin() {
+  async function callLogin() {
     console.log("Logging");
+    const response = await postLogin(loginData.username, loginData.password);
+    console.log({ response });
+    if (response.isError) {
+      //if there is an error, i don't proceed
+      setErrorLogin(response.messageError);
+      setDisabledLogin(true);
+    } else {
+      //if login ok, I'll save the token
+      console.log("Login!");
+      const user = jwtDecode(response.data.data); // decode your token here
+      dispatch(
+        setSessionDetails({
+          sessionStarted: user.iat,
+          sessionExpire: user.exp,
+          sessionToken: response.data.data,
+        })
+      );
+
+      console.log({ loginData });
+      dispatch(
+        setSessionUser({
+          username: user.username,
+          role: "admin",
+        })
+      );
+
+      setSnackOpened(true);
+      await waitforme(4000);
+      navigate("/");
+    }
   }
 
   useEffect(() => {
-    console.log({ loginData });
     if (
       loginData.username !== "" &&
       loginData.password !== "" &&
       loginData.password.length > 4
-    )
+    ) {
       setDisabledLogin(false);
-    else setDisabledLogin(true);
+      setErrorLogin("");
+    } else {
+      setErrorLogin("Immetti nome utente e password (>4)");
+      setDisabledLogin(true);
+    }
   }, [loginData]);
 
   return (
@@ -77,7 +110,6 @@ function SignIn() {
               }}
             />
           </Box>
-
           <Button
             variant="contained"
             style={{ marginTop: "20px" }}
@@ -86,25 +118,30 @@ function SignIn() {
           >
             Accedi
           </Button>
+
+          {disabledLogin && (
+            <Alert style={{ marginTop: "20px" }} severity="error">
+              {errorLogin}
+            </Alert>
+          )}
         </div>
         <div className="item" style={{ flexGrow: 1 }}>
-          Qui ci sarà il logo e <br></br>il nome dell'oratorioQui ci sarà il
-          logo e il nome dell'oratorioQui <br></br>ci sarà il logo e il nome
-          dell'oratorioQui<br></br> ci sarà il logo e il nome dell'oratorioQui
-          ci sarà il logo e il nome dell'or<br></br>atorioQui ci sarà il logo e
-          il nome dell'oratorioQ<br></br>ui ci sarà il logo e il nome
-          dell'oratorioQui ci sarà il logo e i<br></br>l nome dell'oratorioQui
-          ci sarà il logo e il nome dell'o<br></br>ratorioQui ci sarà il logo e
-          il nome dell'oratorioQui ci sa<br></br>rà il logo e il nome
-          dell'oratorioQui ci sarà il logo e il nome dell'o<br></br>ratorioQui
-          ci sarà il logo e il nome dell'orato<br></br>ioQui ci sarà il logo e
-          il nome dell'oratorioQui ci sa<br></br>à il logo e il nome
-          dell'oratorioQui ci sarà il<br></br> logo e il nome dell'oratorioQui
-          ci sarà il logo e il nome<br></br> dell'oratorioQui ci sarà il logo e
-          il nome dell'oratorio
+          <img alt="logo" src={logo_parrocchia} className="logo"></img>
+          <h3>
+            Oratorio S. Stefano <br></br>~<br></br>Cividate Camuno
+          </h3>
         </div>
       </div>
       <Copyright></Copyright>
+      <SnackMessage
+        duration={6000}
+        isOpened={snackOpened}
+        message={"Login effettuato con successo!\nAttendi..."}
+        type={"success"}
+        setIsOpened={() => {
+          setSnackOpened(false);
+        }}
+      />
     </div>
   );
 }
