@@ -11,6 +11,7 @@ import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { SnackMessage } from "../components/SnackMessage";
 import { waitforme } from "../utils/waitForMe";
+import { LoadingFS } from "../components/LoadingFS";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 function SignIn() {
@@ -18,6 +19,7 @@ function SignIn() {
   const navigate = useNavigate();
   const [snackOpened, setSnackOpened] = useState(false);
   const [disabledLogin, setDisabledLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorLogin, setErrorLogin] = useState(
     "Immetti nome utente e password!"
   );
@@ -28,12 +30,14 @@ function SignIn() {
 
   async function callLogin() {
     console.log("Logging");
+    setIsLoading(true);
     const response = await postLogin(loginData.username, loginData.password);
     console.log({ response });
     if (response.isError) {
       //if there is an error, i don't proceed
       setErrorLogin(response.messageError);
       setDisabledLogin(true);
+      setIsLoading(false);
     } else {
       //if login ok, I'll save the token
       console.log("Login!");
@@ -54,6 +58,7 @@ function SignIn() {
         })
       );
 
+      setIsLoading(false);
       setSnackOpened(true);
       await waitforme(4000);
       navigate("/");
@@ -133,6 +138,7 @@ function SignIn() {
         </div>
       </div>
       <Copyright></Copyright>
+
       <SnackMessage
         duration={6000}
         isOpened={snackOpened}
@@ -142,6 +148,8 @@ function SignIn() {
           setSnackOpened(false);
         }}
       />
+
+      <LoadingFS isOpened={isLoading}></LoadingFS>
     </div>
   );
 }

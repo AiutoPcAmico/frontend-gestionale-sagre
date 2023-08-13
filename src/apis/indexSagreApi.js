@@ -1,6 +1,6 @@
 import axios from "./axios";
 import { store } from "../stores/store";
-import { destroySession } from "../stores/sessionInfo";
+import sessionInfo, { destroySession } from "../stores/sessionInfo";
 
 function retrieveErrors(statusCode, data) {
   var isError = false;
@@ -94,4 +94,19 @@ const postLogin = async (username, password) => {
   }
 };
 
-export { postLogin };
+const getAllReservations = async () => {
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+  try {
+    const response = await axios.get("/reservations/allReservations", {
+      headers: {
+        Authorization: "Bearer " + access,
+      },
+    });
+
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
+    return retrieveErrors(e.response.status, e.response.data.result);
+  }
+};
+
+export { postLogin, getAllReservations };

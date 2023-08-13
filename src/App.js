@@ -9,8 +9,6 @@ function App() {
   return (
     <div className="App">
       <NavigationBar></NavigationBar>
-      <AlertDialogSlide></AlertDialogSlide>
-      <Counter></Counter>
       <RouterHandler></RouterHandler>
     </div>
   );

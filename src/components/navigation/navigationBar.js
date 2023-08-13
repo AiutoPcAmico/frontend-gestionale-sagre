@@ -27,6 +27,7 @@ const pages = [
 ];
 
 function NavigationBar() {
+  const [pages, setPages] = useState([]);
   const [settings, setSettings] = useState([]);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -48,8 +49,21 @@ function NavigationBar() {
   };
 
   useEffect(() => {
-    if (user.username) setSettings(["Profilo", "Logout"]);
-    else setSettings(["Login"]);
+    if (user.username) {
+      setSettings(["Profilo", "Logout"]);
+      setPages([
+        "Cucina",
+        "Piastra",
+        "Griglia",
+        "Pizzeria",
+        "Bar",
+        "Bancone",
+        "Cassa",
+      ]);
+    } else {
+      setSettings(["Login"]);
+      setPages(["Login", "Home"]);
+    }
   }, [user]);
 
   return (

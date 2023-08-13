@@ -29,4 +29,16 @@
   .loginPage .logo {
     width: 65%;
   }
+
+  .paddedPage {
+    padding: 20px;
+    align-content: flex-end;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .cashDesk .allOrders {
+  }
 }
