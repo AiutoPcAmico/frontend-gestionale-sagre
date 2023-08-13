@@ -98,7 +98,8 @@ function AllReservations() {
     {
       id: "",
       label: "Azioni",
-      minWidth: 50,
+      minWidth: 20,
+      align: "center",
       format: (value, idReservation) => {
         return (
           <div

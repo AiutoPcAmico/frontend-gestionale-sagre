@@ -58,9 +58,9 @@ function SignIn() {
         })
       );
 
-      setIsLoading(false);
       setSnackOpened(true);
       await waitforme(4000);
+      setIsLoading(false);
       navigate("/");
     }
   }

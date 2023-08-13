@@ -13,25 +13,21 @@ import MenuItem from "@mui/material/MenuItem";
 import { useEffect, useState } from "react";
 
 import logo_parrocchia from "../../images/logo_parrocchia.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deepOrange } from "@mui/material/colors";
-
-const pages = [
-  "Cucina",
-  "Piastra",
-  "Griglia",
-  "Pizzeria",
-  "Bar",
-  "Bancone",
-  "Cassa",
-];
+import { useNavigate } from "react-router-dom";
+import { SnackMessage } from "../SnackMessage";
+import { destroySession } from "../../stores/sessionInfo";
 
 function NavigationBar() {
   const [pages, setPages] = useState([]);
   const [settings, setSettings] = useState([]);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [sessionTerminated, setSessionTerminated] = useState(false);
   const user = useSelector((state) => state.sessionInfo.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -48,21 +44,71 @@ function NavigationBar() {
     setAnchorElUser(null);
   };
 
+  const selectedElement = (navigationTo) => {
+    if (navigationTo !== "/logout") {
+      handleCloseNavMenu();
+      handleCloseUserMenu();
+
+      navigate(navigationTo);
+    } else {
+      dispatch(destroySession());
+      setSessionTerminated(true);
+      navigate("/");
+    }
+  };
+
   useEffect(() => {
     if (user.username) {
-      setSettings(["Profilo", "Logout"]);
+      setSettings([
+        {
+          name: "Profilo",
+          navigate: "/",
+        },
+        {
+          name: "Logout",
+          navigate: "/logout",
+        },
+      ]);
       setPages([
-        "Cucina",
-        "Piastra",
-        "Griglia",
-        "Pizzeria",
-        "Bar",
-        "Bancone",
-        "Cassa",
+        {
+          name: "Cucina",
+          navigate: "/gastronomy",
+        },
+        {
+          name: "Griglia",
+          navigate: "/grill",
+        },
+        {
+          name: "Bar",
+          navigate: "/bar",
+        },
+        {
+          name: "Cassa",
+          navigate: "/cashdesk/allreservations",
+        },
+        {
+          name: "Pizzeria",
+          navigate: "/pizza",
+        },
       ]);
     } else {
-      setSettings(["Login"]);
-      setPages(["Login", "Home"]);
+      setSettings([
+        {
+          name: "Login",
+          navigate: "/login",
+        },
+      ]);
+
+      setPages([
+        {
+          name: "Login",
+          navigate: "/login",
+        },
+        {
+          name: "Home",
+          navigate: "/home",
+        },
+      ]);
     }
   }, [user]);
 
@@ -124,8 +170,11 @@ function NavigationBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem
+                  key={page.name}
+                  onClick={() => selectedElement(page.navigate)}
+                >
+                  <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -157,11 +206,11 @@ function NavigationBar() {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={page.name}
+                onClick={() => selectedElement(page.navigate)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>
@@ -203,14 +252,27 @@ function NavigationBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem
+                  key={setting.name}
+                  onClick={() => selectedElement(setting.navigate)}
+                >
+                  <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
         </Toolbar>
       </Container>
+
+      <SnackMessage
+        duration={6000}
+        isOpened={sessionTerminated}
+        message={"Logout effettuato con successo!"}
+        setIsOpened={() => {
+          setSessionTerminated(false);
+        }}
+        type={"success"}
+      />
     </AppBar>
   );
 }

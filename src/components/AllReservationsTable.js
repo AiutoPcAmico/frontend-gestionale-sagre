@@ -7,11 +7,12 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
-import { Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 
 function AllReservationsTable({ dataTable, columnsTable }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [search, setSearch] = useState("");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -23,8 +24,25 @@ function AllReservationsTable({ dataTable, columnsTable }) {
     setPage(0);
   };
 
+  useEffect(() => {
+    setPage(0);
+    console.log("filtered: " + search);
+  }, [search]);
+
   return (
     <Paper sx={{ width: "90%", overflow: "hidden" }}>
+      <div className="searchField">
+        <Typography>Cerca nominativo:&nbsp;&nbsp;&nbsp;</Typography>
+        <TextField
+          id="standard-basic"
+          label="Standard"
+          variant="outlined"
+          value={search}
+          onChange={(text) => {
+            setSearch(text.target.value);
+          }}
+        />
+      </div>
       <TableContainer sx={{ maxHeight: "100vh" }}>
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
@@ -46,6 +64,9 @@ function AllReservationsTable({ dataTable, columnsTable }) {
             {dataTable &&
               dataTable.length > 0 &&
               dataTable
+                .filter((row) => {
+                  return row.name.toLowerCase().includes(search.toLowerCase());
+                })
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -72,9 +93,13 @@ function AllReservationsTable({ dataTable, columnsTable }) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 15]}
         component="div"
-        count={dataTable?.length || 0}
+        count={
+          dataTable?.filter((row) => {
+            return row.name.toLowerCase().includes(search.toLowerCase());
+          }).length || 0
+        }
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
