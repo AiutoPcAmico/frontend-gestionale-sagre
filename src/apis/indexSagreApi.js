@@ -159,9 +159,70 @@ const getDispensingOfReservation = async (reservationId) => {
   }
 };
 
+const getAllBeverages = async () => {
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+  try {
+    const response = await axios.get("/beverages/allBeverages", {
+      headers: {
+        Authorization: "Bearer " + access,
+      },
+    });
+
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
+    return retrieveErrors(e.response.status, e.response.data.result);
+  }
+};
+
+const getAllFoods = async () => {
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+  try {
+    const response = await axios.get("/foods/allFoods", {
+      headers: {
+        Authorization: "Bearer " + access,
+      },
+    });
+
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
+    return retrieveErrors(e.response.status, e.response.data.result);
+  }
+};
+
+const addCompleteReservation = async (complete) => {
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+  try {
+    const response = await axios.put(
+      "/reservations/addCOmpleteReservation",
+      {
+        reservation: {
+          table: complete.table,
+          name: complete.name,
+          coverCharge: complete.coverCharge,
+          isPayed: complete.isPayed,
+        },
+        beverages: complete.beverages,
+        foods: complete.foods,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + access,
+        },
+      }
+    );
+
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
+    return retrieveErrors(e.response.status, e.response.data.result);
+  }
+};
+
 export {
   postLogin,
   getAllReservations,
   getPreparationOfReservation,
   getDispensingOfReservation,
+  getAllBeverages,
+  getAllFoods,
+  addCompleteReservation,
 };

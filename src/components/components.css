@@ -15,3 +15,21 @@
   margin-left: 5%;
   margin-bottom: 20px;
 }
+
+.listOfProduct {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.singleProductCard {
+  height: 370px;
+  width: 200px;
+  margin: 10px;
+}
+
+.dialogElement {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}

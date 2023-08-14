@@ -42,7 +42,7 @@ function MyDialogMessage({
                 returnMessage(false);
               }}
             >
-              Disagree
+              Annulla
             </Button>
           )}
           <Button
@@ -50,7 +50,7 @@ function MyDialogMessage({
               returnMessage(true);
             }}
           >
-            Agree
+            Ok
           </Button>
         </DialogActions>
       </Dialog>

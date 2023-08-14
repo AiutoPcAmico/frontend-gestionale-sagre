@@ -10,6 +10,7 @@ import { LoadingFS } from "../../components/LoadingFS";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import { useSnackbar } from "notistack";
 import { MyDialogMessage } from "../../components/MyDialogMessage";
+import { formatDateTime } from "../../utils/dates";
 
 function DetailsReservation() {
   const params = useParams();
@@ -56,13 +57,6 @@ function DetailsReservation() {
       notes: singleRes.noteErogazione,
       name: singleRes.nominativo,
     };
-  }
-
-  function formatDateTime(value) {
-    const data = new Date(value);
-    return (
-      data.toLocaleDateString("it-IT") + " " + data.toLocaleTimeString("it-IT")
-    );
   }
 
   //retriving data
@@ -222,12 +216,12 @@ function DetailsReservation() {
       <div className="paddedPage ">
         Dettagli prenotazione
         <p>{params.id}</p>
-        <Paper className="detailsReservation">
+        <Paper className="whiteBlockFormatted">
           <div className="">
             <div className="values">
               <Typography>Nominativo:&nbsp;&nbsp;&nbsp;</Typography>
               <TextField
-                id="standard-read-only-input"
+                id="nominativo_details"
                 value={generalDetails.name}
                 variant="standard"
                 InputProps={{
@@ -239,7 +233,7 @@ function DetailsReservation() {
             <div className="values">
               <Typography>Data e Ora:&nbsp;&nbsp;&nbsp;</Typography>
               <TextField
-                id="standard-read-only-input"
+                id="dataOra_details"
                 value={formatDateTime(generalDetails.dateTime)}
                 variant="standard"
                 InputProps={{
@@ -253,7 +247,7 @@ function DetailsReservation() {
             <div className="values">
               <Typography>Tavolo:&nbsp;&nbsp;</Typography>
               <TextField
-                id="standard-read-only-input"
+                id="tavolo_details"
                 value={generalDetails.table}
                 variant="standard"
                 InputProps={{
@@ -265,8 +259,8 @@ function DetailsReservation() {
             <div className="values">
               <Typography>Prodotti:&nbsp;&nbsp;</Typography>
               <TextField
-                id="standard-read-only-input"
-                value={`Cibo: ${preparations.length} - Bevande: ${0}`}
+                id="prodotti_count_details"
+                value={`Cibo: ${preparations.length} - Bevande: ${beverages.length}`}
                 variant="standard"
                 InputProps={{
                   readOnly: true,

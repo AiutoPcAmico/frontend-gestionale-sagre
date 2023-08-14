@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getAllReservations } from "../../apis/indexSagreApi";
 import { LoadingFS } from "../../components/LoadingFS";
@@ -139,9 +139,17 @@ function AllReservations() {
     <div className="pages">
       <div className="cashDesk">
         <div className="paddedPage">
-          <Typography>Pippo!</Typography>
+          <Typography fontSize={"1.5em"}> Tutte le Prenotazioni</Typography>
           <PersonalizedTable dataTable={list} columnsTable={columns} />
         </div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            navigate("/cashdesk/newreservation");
+          }}
+        >
+          Nuova Prenotazione
+        </Button>
       </div>
       <LoadingFS isOpened={isLoading} />
       <SnackMessage

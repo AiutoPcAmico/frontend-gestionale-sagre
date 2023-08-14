@@ -52,7 +52,7 @@
     align-items: center;
   }
 
-  .detailsReservation {
+  .whiteBlockFormatted {
     width: 90%;
     overflow: hidden;
     min-height: 100px;
@@ -62,7 +62,7 @@
     justify-content: space-evenly;
   }
 
-  .detailsReservation .values {
+  .whiteBlockFormatted .values {
     display: flex;
     justify-content: center;
     align-items: center;
