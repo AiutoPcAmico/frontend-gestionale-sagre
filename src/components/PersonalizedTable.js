@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
 import { TextField, Typography } from "@mui/material";
 
-function AllReservationsTable({ dataTable, columnsTable }) {
+function PersonalizedTable({ dataTable, columnsTable, searchVisible = true }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [search, setSearch] = useState("");
@@ -18,7 +18,6 @@ function AllReservationsTable({ dataTable, columnsTable }) {
     setPage(newPage);
   };
 
-  console.log(dataTable);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -30,19 +29,22 @@ function AllReservationsTable({ dataTable, columnsTable }) {
   }, [search]);
 
   return (
-    <Paper sx={{ width: "90%", overflow: "hidden" }}>
-      <div className="searchField">
-        <Typography>Cerca nominativo:&nbsp;&nbsp;&nbsp;</Typography>
-        <TextField
-          id="standard-basic"
-          label="Standard"
-          variant="outlined"
-          value={search}
-          onChange={(text) => {
-            setSearch(text.target.value);
-          }}
-        />
-      </div>
+    <Paper className="table">
+      {searchVisible && (
+        <div className="searchField">
+          <Typography>Cerca nominativo:&nbsp;&nbsp;&nbsp;</Typography>
+
+          <TextField
+            id="standard-basic"
+            label="Standard"
+            variant="outlined"
+            value={search}
+            onChange={(text) => {
+              setSearch(text.target.value);
+            }}
+          />
+        </div>
+      )}
       <TableContainer sx={{ maxHeight: "100vh" }}>
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
@@ -70,12 +72,7 @@ function AllReservationsTable({ dataTable, columnsTable }) {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.idReservation}
-                    >
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.key}>
                       {columnsTable.map((column) => {
                         const value = row[column.id];
                         return (
@@ -109,4 +106,4 @@ function AllReservationsTable({ dataTable, columnsTable }) {
   );
 }
 
-export { AllReservationsTable };
+export { PersonalizedTable };

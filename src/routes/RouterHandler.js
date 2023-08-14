@@ -4,6 +4,7 @@ import { HomePage } from "../pages/Homepage";
 import { Error404 } from "../pages/Error404";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { AllReservations } from "../pages/cashDesk/AllReservations.js";
+import { DetailsReservation } from "../pages/cashDesk/DetailsReservation";
 
 function RouterHandler({ selSelectedPage }) {
   return (
@@ -15,6 +16,15 @@ function RouterHandler({ selSelectedPage }) {
         element={
           <ProtectedRoute>
             <AllReservations />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/cashdesk/reservationdetails/:id"
+        element={
+          <ProtectedRoute>
+            <DetailsReservation />
           </ProtectedRoute>
         }
       />

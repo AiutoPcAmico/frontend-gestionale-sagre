@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getAllReservations } from "../../apis/indexSagreApi";
 import { LoadingFS } from "../../components/LoadingFS";
 import { SnackMessage } from "../../components/SnackMessage";
-import { AllReservationsTable } from "../../components/AllReservationsTable.js";
+import { PersonalizedTable } from "../../components/PersonalizedTable.js";
 import SavedSearchIcon from "@mui/icons-material/SavedSearch";
 import { useNavigate } from "react-router-dom";
 
@@ -18,6 +18,7 @@ function AllReservations() {
       (parseFloat(singleRes.totaleCibi) || 0) +
       (parseFloat(singleRes.totaleBevande) || 0);
     return {
+      key: singleRes.idPrenotazione,
       idReservation: singleRes.idPrenotazione,
       dateTime: singleRes.dataOra,
       table: singleRes.tavolo,
@@ -104,7 +105,7 @@ function AllReservations() {
         return (
           <div
             onClick={() => {
-              navigate("/cashdesk/reservationDetail/" + idReservation);
+              navigate("/cashdesk/reservationdetails/" + idReservation);
             }}
           >
             <SavedSearchIcon color="primary" />
@@ -139,7 +140,7 @@ function AllReservations() {
       <div className="cashDesk">
         <div className="paddedPage">
           <Typography>Pippo!</Typography>
-          <AllReservationsTable dataTable={list} columnsTable={columns} />
+          <PersonalizedTable dataTable={list} columnsTable={columns} />
         </div>
       </div>
       <LoadingFS isOpened={isLoading} />

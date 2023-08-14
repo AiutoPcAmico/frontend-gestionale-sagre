@@ -109,4 +109,59 @@ const getAllReservations = async () => {
   }
 };
 
-export { postLogin, getAllReservations };
+const getPreparationOfReservation = async (reservationId) => {
+  if (!reservationId) {
+    return retrieveErrors(500, {
+      isError: true,
+      data: "Id not passed to function!",
+    });
+  }
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+  try {
+    const response = await axios.get(
+      "/reservations/foods/getpreparations/" + reservationId,
+      {
+        headers: {
+          Authorization: "Bearer " + access,
+        },
+      }
+    );
+
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
+    console.log({ e });
+    return retrieveErrors(e.response.status, e.response.data);
+  }
+};
+
+const getDispensingOfReservation = async (reservationId) => {
+  if (!reservationId) {
+    return retrieveErrors(500, {
+      isError: true,
+      data: "Id not passed to function!",
+    });
+  }
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+  try {
+    const response = await axios.get(
+      "/reservations/beverages/getdispensing/" + reservationId,
+      {
+        headers: {
+          Authorization: "Bearer " + access,
+        },
+      }
+    );
+
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
+    console.log({ e });
+    return retrieveErrors(e.response.status, e.response.data);
+  }
+};
+
+export {
+  postLogin,
+  getAllReservations,
+  getPreparationOfReservation,
+  getDispensingOfReservation,
+};
