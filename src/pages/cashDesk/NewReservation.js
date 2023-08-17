@@ -46,51 +46,89 @@ function NewReservation() {
     console.log({ product });
     var oldArray = [];
     oldArray = JSON.parse(JSON.stringify(reservation.foods));
-    oldArray.push({
-      notes: product.element.notes,
-      quantity: product.element.quantity,
-      idFood: product.element.id,
-    });
+
+    //check if already exists
+    const pos = oldArray.map((e) => e.idFood).indexOf(product.element.id);
+    console.log({ pos });
+    if (pos === -1) {
+      //if not yet in reservation
+      oldArray.push({
+        notes: product.element.notes,
+        quantity: product.element.quantity,
+        idFood: product.element.id,
+      });
+    } else {
+      //if already added to the reservation and i need only to modify the quantity
+      oldArray[pos].quantity = product.element.quantity;
+    }
 
     setReservation((prevState) => ({
       ...prevState,
       foods: oldArray,
     }));
 
-    setFoodsRequired((prevArray) => [
-      ...prevArray,
-      {
+    //using array for the calculator price
+    const arrayRequired = JSON.parse(JSON.stringify(foodsRequired));
+    //check if already exists
+    const positionOnRequired = foodsRequired
+      .map((e) => e.id)
+      .indexOf(product.element.id);
+    console.log({ positionOnRequired });
+    if (positionOnRequired === -1) {
+      arrayRequired.push({
         id: product.element.id,
         quantity: product.element.quantity,
         price: product.element.price,
         name: product.element.name,
-      },
-    ]);
+      });
+    } else {
+      arrayRequired[positionOnRequired].quantity = product.element.quantity;
+    }
+
+    setFoodsRequired(arrayRequired);
   }
 
   function addBeverage(product) {
     var oldArray = [];
     oldArray = JSON.parse(JSON.stringify(reservation.beverages));
-    oldArray.push({
-      notes: product.element.notes,
-      quantity: product.element.quantity,
-      idBeverage: product.element.id,
-    });
+    //check if already exists
+    const posOnOld = reservation.beverages
+      .map((e) => e.idBeverage)
+      .indexOf(product.element.id);
+
+    if (posOnOld === -1) {
+      oldArray.push({
+        notes: product.element.notes,
+        quantity: product.element.quantity,
+        idBeverage: product.element.id,
+      });
+    } else {
+      oldArray[posOnOld].quantity = product.element.quantity;
+    }
 
     setReservation((prevState) => ({
       ...prevState,
       beverages: oldArray,
     }));
 
-    setBeveragesRequired((prevArray) => [
-      ...prevArray,
-      {
+    //using array for the calculator price
+    const arrayRequired = JSON.parse(JSON.stringify(beveragesRequired));
+    //check if already exists
+    const positionOnRequired = beveragesRequired
+      .map((e) => e.id)
+      .indexOf(product.element.id);
+    if (positionOnRequired === -1) {
+      arrayRequired.push({
         id: product.element.id,
         quantity: product.element.quantity,
         price: product.element.price,
         name: product.element.name,
-      },
-    ]);
+      });
+    } else {
+      arrayRequired[positionOnRequired].quantity = product.element.quantity;
+    }
+
+    setBeveragesRequired(arrayRequired);
   }
 
   async function sendData() {
@@ -118,6 +156,10 @@ function NewReservation() {
       setIsLoading(false);
     }
   }
+
+  useEffect(() => {
+    console.log({ reservation, foodsRequired, beveragesRequired });
+  }, [reservation, foodsRequired, beveragesRequired]);
 
   return (
     <div className="pages">

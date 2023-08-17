@@ -13,7 +13,6 @@ import { SnackMessage } from "../components/SnackMessage";
 import { waitforme } from "../utils/waitForMe";
 import { LoadingFS } from "../components/LoadingFS";
 
-// TODO remove, this demo shouldn't need to reset the theme.
 function SignIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

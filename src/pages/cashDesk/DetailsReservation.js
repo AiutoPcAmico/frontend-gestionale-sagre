@@ -107,7 +107,6 @@ function DetailsReservation() {
         }
       });
 
-      //TODO: add beverages
       getDispensingOfReservation(id).then((response) => {
         if (response.isError) {
           if (response.status === 404) {
