@@ -111,7 +111,7 @@ const getAllReservations = async () => {
 
 const getPreparationOfReservation = async (reservationId) => {
   if (!reservationId) {
-    return retrieveErrors(500, {
+    return retrieveErrors(400, {
       isError: true,
       data: "Id not passed to function!",
     });
@@ -136,7 +136,7 @@ const getPreparationOfReservation = async (reservationId) => {
 
 const getDispensingOfReservation = async (reservationId) => {
   if (!reservationId) {
-    return retrieveErrors(500, {
+    return retrieveErrors(400, {
       isError: true,
       data: "Id not passed to function!",
     });
@@ -217,6 +217,30 @@ const addCompleteReservation = async (complete) => {
   }
 };
 
+const getOfCategory = async (type, category) => {
+  if (!type || !category) {
+    return retrieveErrors(
+      400,
+      "categoria o tipologia del prodotto non passata alla funzione!"
+    );
+  }
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+
+  try {
+    const response = await axios.get(
+      `/reservations/${type}/getOfCategory/${category}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access,
+        },
+      }
+    );
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
+    return retrieveErrors(e.response.status, e.response.data.result);
+  }
+};
+
 export {
   postLogin,
   getAllReservations,
@@ -225,4 +249,5 @@ export {
   getAllBeverages,
   getAllFoods,
   addCompleteReservation,
+  getOfCategory,
 };

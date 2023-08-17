@@ -6,6 +6,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { AllReservations } from "../pages/cashDesk/AllReservations.js";
 import { DetailsReservation } from "../pages/cashDesk/DetailsReservation";
 import { NewReservation } from "../pages/cashDesk/NewReservation";
+import { PizzeriaPage } from "../pages/Pizzeria";
 
 function RouterHandler({ selSelectedPage }) {
   return (
@@ -39,6 +40,14 @@ function RouterHandler({ selSelectedPage }) {
         }
       />
 
+      <Route
+        path="/pizza"
+        element={
+          <ProtectedRoute>
+            <PizzeriaPage />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/*" element={<Error404 />} />
     </Routes>
   );
