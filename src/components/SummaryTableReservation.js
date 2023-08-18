@@ -43,7 +43,6 @@ function SummaryTableReservation({ foods, beverages }) {
       )
     );
 
-    console.log({ rowsFoods, rowsBeverages });
     const finalRows = rowsFoods.concat(rowsBeverages);
     setInvoiceSubTotal(subtotal(finalRows));
     setRows(finalRows);

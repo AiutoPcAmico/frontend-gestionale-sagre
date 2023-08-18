@@ -77,9 +77,7 @@ function PersonalizedTable({ dataTable, columnsTable, searchVisible = true }) {
                         const value = row[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {column.format
-                              ? column.format(value, row.idReservation)
-                              : value}
+                            {column.format ? column.format(value, row) : value}
                           </TableCell>
                         );
                       })}

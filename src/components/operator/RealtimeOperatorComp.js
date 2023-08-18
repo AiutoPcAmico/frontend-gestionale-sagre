@@ -5,13 +5,48 @@ import { getOfCategory } from "../../apis/indexSagreApi.js";
 import { useSnackbar } from "notistack";
 import { OperatorViewTable } from "./OperatorViewTable.js";
 import { OperatorViewCards } from "./OperatorViewCards.js";
+import { DialogDelivering } from "./DialogDelivering.js";
 
 function RealtimeOperatorComp({ category, type }) {
   const [list, setList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [viewTable, setViewTable] = useState(true);
+  const [delivering, setDelivering] = useState({
+    idReservation: null,
+    idProduct: null,
+    productType: null,
+    quantity: null,
+    delivered: null,
+    nowDelivered: null,
+    nameUser: null,
+    productName: null,
+  });
   const { enqueueSnackbar } = useSnackbar();
   const millisecondsApi = 30000;
+
+  function newDeliver(result) {
+    if (result.confirmed) {
+      setIsLoading(true);
+      console.log("nuovo delivering! " + result.values);
+      setIsLoading(false);
+    } else {
+      console.log("lasciostare");
+    }
+    setDelivering({
+      idReservation: null,
+      idProduct: null,
+      productType: null,
+      quantity: null,
+      delivered: null,
+      nowDelivered: null,
+      nameUser: null,
+      productName: null,
+    });
+  }
+
+  useEffect(() => {
+    console.log(delivering);
+  }, [delivering]);
 
   useEffect(() => {
     async function loadData() {
@@ -34,7 +69,7 @@ function RealtimeOperatorComp({ category, type }) {
               preventDuplicate: true,
             }
           );
-          setList(response.data);
+          setList(response.data.data);
         }
       });
     }
@@ -63,7 +98,6 @@ function RealtimeOperatorComp({ category, type }) {
               inputProps={{ "aria-label": "ant design" }}
               checked={viewTable}
               onChange={(e) => {
-                console.log(e.target.checked);
                 setViewTable(e.target.checked);
               }}
             />
@@ -71,9 +105,33 @@ function RealtimeOperatorComp({ category, type }) {
           </Stack>
         </div>
 
-        {viewTable === true && <OperatorViewTable />}
+        {viewTable === true && (
+          <OperatorViewTable
+            listProducts={list}
+            setConfirmDelivery={(row) => {
+              console.log(row);
+              setDelivering({
+                idReservation: row.idReservation,
+                idProduct: row.idProduct,
+                quantity: row.quantity,
+                delivered: row.delivered,
+                productType: type,
+                nameUser: row.name,
+                productName: row.productName,
+                nowDelivered: null,
+              });
+            }}
+          />
+        )}
         {viewTable === false && <OperatorViewCards />}
       </Paper>
+      <DialogDelivering
+        delivered={delivering.delivered}
+        productName={delivering.productName}
+        quantity={delivering.quantity}
+        name={delivering.nameUser}
+        onExiting={newDeliver}
+      />
       <LoadingFS isOpened={isLoading} />
     </div>
   );

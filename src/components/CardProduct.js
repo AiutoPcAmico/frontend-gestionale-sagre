@@ -68,11 +68,9 @@ function CardProduct({
       <DialogQuantity
         isOpen={dialogOpen}
         returnMessage={(message) => {
-          console.log({ message });
           if (message.completed) {
             //if I saved, i'll push to the array
             var notesParsed = null;
-            console.log(message.notes);
             if (message.notes !== "") notesParsed = message.notes;
             onAdd({
               id: productId,

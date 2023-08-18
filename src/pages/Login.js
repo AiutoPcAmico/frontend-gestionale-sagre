@@ -31,7 +31,6 @@ function SignIn() {
     console.log("Logging");
     setIsLoading(true);
     const response = await postLogin(loginData.username, loginData.password);
-    console.log({ response });
     if (response.isError) {
       //if there is an error, i don't proceed
       setErrorLogin(response.messageError);

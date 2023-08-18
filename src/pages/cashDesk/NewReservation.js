@@ -43,13 +43,11 @@ function NewReservation() {
   ]);
 
   function addFood(product) {
-    console.log({ product });
     var oldArray = [];
     oldArray = JSON.parse(JSON.stringify(reservation.foods));
 
     //check if already exists
     const pos = oldArray.map((e) => e.idFood).indexOf(product.element.id);
-    console.log({ pos });
     if (pos === -1) {
       //if not yet in reservation
       oldArray.push({
@@ -73,7 +71,6 @@ function NewReservation() {
     const positionOnRequired = foodsRequired
       .map((e) => e.id)
       .indexOf(product.element.id);
-    console.log({ positionOnRequired });
     if (positionOnRequired === -1) {
       arrayRequired.push({
         id: product.element.id,
@@ -135,7 +132,6 @@ function NewReservation() {
     setIsLoading(true);
     const response = await addCompleteReservation(reservation);
 
-    console.log(response.isError);
     if (response.isError) {
       enqueueSnackbar(
         "Errore durante il salvataggio! Riprova! " + response.messageError,
