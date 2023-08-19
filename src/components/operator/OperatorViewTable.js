@@ -113,6 +113,8 @@ function OperatorViewTable({ listProducts, setConfirmDelivery }) {
     if (listProducts && listProducts.length > 0) {
       const correctList = listProducts.map((single) => createData(single));
       setFormattedList(correctList);
+    } else {
+      setFormattedList([]);
     }
   }, [listProducts]);
 

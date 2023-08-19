@@ -1,17 +1,17 @@
 import { Typography } from "@mui/material";
 import { RealtimeOperatorComp } from "../components/operator/RealtimeOperatorComp";
 
-function PizzeriaPage() {
+function OperatorPage({ supCategory, supType }) {
   return (
     <div className="pages">
       <div className="pizzeria">
         <div className="paddedPage">
-          <Typography fontSize={"16px"}>Comande Pizzeria</Typography>
-          <RealtimeOperatorComp category={"pizzeria"} type={"foods"} />
+          <Typography fontSize={"16px"}>Comande {supCategory}</Typography>
+          <RealtimeOperatorComp category={supCategory} type={supType} />
         </div>
       </div>
     </div>
   );
 }
 
-export { PizzeriaPage };
+export { OperatorPage };

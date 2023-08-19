@@ -17,7 +17,6 @@ function CardProduct({
   title,
   productImage,
 }) {
-  const [quantity, setQuantity] = useState(0);
   const [image, setImage] = useState();
   const [dialogOpen, setDialogOpen] = useState(false);
 

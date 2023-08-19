@@ -241,6 +241,50 @@ const getOfCategory = async (type, category) => {
   }
 };
 
+const deliverProduct = async (
+  type,
+  quantityDelivered,
+  idProduct,
+  idReservation
+) => {
+  if (!type || !idProduct || !idReservation || !quantityDelivered) {
+    return retrieveErrors(400, "Parametri mancanti per la chiamata api!");
+  }
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+
+  var apiUrl = null;
+  var obj = {};
+
+  if (type === "foods") {
+    apiUrl = "/reservations/foods/updateDeliveryFood";
+    obj = {
+      idReservation: parseInt(idReservation),
+      idFood: parseInt(idProduct),
+      quantityDelivered: parseInt(quantityDelivered),
+    };
+  } else {
+    if (type === "beverages") {
+      apiUrl = "/reservations/beverages/updateDeliveryBeverage";
+      obj = {
+        idReservation: parseInt(idReservation),
+        idBeverage: parseInt(idProduct),
+        quantityDelivered: parseInt(quantityDelivered),
+      };
+    }
+  }
+
+  try {
+    const response = await axios.post(apiUrl, obj, {
+      headers: {
+        Authorization: "Bearer " + access,
+      },
+    });
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
+    return retrieveErrors(e.response.status, e.response.data.result);
+  }
+};
+
 export {
   postLogin,
   getAllReservations,
@@ -250,4 +294,5 @@ export {
   getAllFoods,
   addCompleteReservation,
   getOfCategory,
+  deliverProduct,
 };

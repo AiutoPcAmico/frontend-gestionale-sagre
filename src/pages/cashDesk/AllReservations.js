@@ -101,11 +101,11 @@ function AllReservations() {
       label: "Azioni",
       minWidth: 20,
       align: "center",
-      format: (value, idReservation) => {
+      format: (value, row) => {
         return (
           <div
             onClick={() => {
-              navigate("/cashdesk/reservationdetails/" + idReservation);
+              navigate("/cashdesk/reservationdetails/" + row.idReservation);
             }}
           >
             <SavedSearchIcon color="primary" />

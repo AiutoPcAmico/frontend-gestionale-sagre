@@ -6,7 +6,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { AllReservations } from "../pages/cashDesk/AllReservations.js";
 import { DetailsReservation } from "../pages/cashDesk/DetailsReservation";
 import { NewReservation } from "../pages/cashDesk/NewReservation";
-import { PizzeriaPage } from "../pages/Pizzeria";
+import { OperatorPage } from "../pages/OperatorPage";
 
 function RouterHandler({ selSelectedPage }) {
   return (
@@ -44,7 +44,52 @@ function RouterHandler({ selSelectedPage }) {
         path="/pizza"
         element={
           <ProtectedRoute>
-            <PizzeriaPage />
+            <OperatorPage supCategory={"pizzeria"} supType={"foods"} />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/gastronomy"
+        element={
+          <ProtectedRoute>
+            <OperatorPage supCategory={"cucina"} supType={"foods"} />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/grill"
+        element={
+          <ProtectedRoute>
+            <OperatorPage supCategory={"griglia"} supType={"foods"} />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/bar"
+        element={
+          <ProtectedRoute>
+            <OperatorPage supCategory={"bar"} supType={"beverages"} />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/drinkscounter"
+        element={
+          <ProtectedRoute>
+            <OperatorPage supCategory={"bancone"} supType={"beverages"} />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/plate"
+        element={
+          <ProtectedRoute>
+            <OperatorPage supCategory={"piastra"} supType={"foods"} />
           </ProtectedRoute>
         }
       />

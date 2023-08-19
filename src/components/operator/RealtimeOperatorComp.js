@@ -1,7 +1,7 @@
 import { Paper, Stack, Switch, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { LoadingFS } from "../LoadingFS.js";
-import { getOfCategory } from "../../apis/indexSagreApi.js";
+import { deliverProduct, getOfCategory } from "../../apis/indexSagreApi.js";
 import { useSnackbar } from "notistack";
 import { OperatorViewTable } from "./OperatorViewTable.js";
 import { OperatorViewCards } from "./OperatorViewCards.js";
@@ -22,15 +22,45 @@ function RealtimeOperatorComp({ category, type }) {
     productName: null,
   });
   const { enqueueSnackbar } = useSnackbar();
-  const millisecondsApi = 30000;
+  const millisecondsApi = 10000;
 
-  function newDeliver(result) {
+  async function newDeliver(result) {
     if (result.confirmed) {
       setIsLoading(true);
       console.log("nuovo delivering! " + result.values);
+      const resultUpdating = await deliverProduct(
+        delivering.productType,
+        result.values,
+        delivering.idProduct,
+        delivering.idReservation
+      );
+      if (resultUpdating.isError) {
+        enqueueSnackbar(
+          "Impossibile aggiornare la consegna! Riprova! " +
+            resultUpdating.messageError,
+          {
+            variant: "error",
+            autoHideDuration: 5000,
+            preventDuplicate: true,
+          }
+        );
+      } else {
+        enqueueSnackbar(
+          "Consegna effettuata con successo!Tra pochi istanti sparirà, se terminata",
+          {
+            variant: "success",
+            autoHideDuration: 5000,
+            preventDuplicate: true,
+          }
+        );
+      }
       setIsLoading(false);
     } else {
-      console.log("lasciostare");
+      enqueueSnackbar("Nessuna azione eseguita. Annullo.", {
+        variant: "default",
+        autoHideDuration: 3000,
+        preventDuplicate: true,
+      });
     }
     setDelivering({
       idReservation: null,
@@ -49,26 +79,36 @@ function RealtimeOperatorComp({ category, type }) {
   }, [delivering]);
 
   useEffect(() => {
+    setList([]);
     async function loadData() {
       getOfCategory(type, category).then((response) => {
         if (response.isError) {
-          enqueueSnackbar(
-            "Impossibile recuperare i dati! Riprova! " + response.messageError,
-            {
-              variant: "error",
-              autoHideDuration: 5000,
-              preventDuplicate: true,
-            }
-          );
+          if (response.status === 404) {
+            enqueueSnackbar(
+              "Non sono state trovate comande. Verifica e riprova più tardi! ",
+              {
+                variant: "warning",
+                autoHideDuration: 5000,
+                preventDuplicate: true,
+              }
+            );
+          } else {
+            enqueueSnackbar(
+              "Impossibile recuperare i dati! Riprova! " +
+                response.messageError,
+              {
+                variant: "error",
+                autoHideDuration: 5000,
+                preventDuplicate: true,
+              }
+            );
+          }
         } else {
-          enqueueSnackbar(
-            "Recupero delle ordinazioni avvenuto con successo! ",
-            {
-              variant: "success",
-              autoHideDuration: 3000,
-              preventDuplicate: true,
-            }
-          );
+          enqueueSnackbar("Aggiornamento... ", {
+            variant: "success",
+            autoHideDuration: 3000,
+            preventDuplicate: true,
+          });
           setList(response.data.data);
         }
       });

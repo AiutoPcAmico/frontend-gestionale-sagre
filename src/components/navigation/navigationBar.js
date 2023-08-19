@@ -75,6 +75,10 @@ function NavigationBar() {
           navigate: "/gastronomy",
         },
         {
+          name: "Piastra",
+          navigate: "/plate",
+        },
+        {
           name: "Griglia",
           navigate: "/grill",
         },
@@ -83,12 +87,16 @@ function NavigationBar() {
           navigate: "/bar",
         },
         {
-          name: "Cassa",
-          navigate: "/cashdesk/allreservations",
-        },
-        {
           name: "Pizzeria",
           navigate: "/pizza",
+        },
+        {
+          name: "Bancone",
+          navigate: "/drinkscounter",
+        },
+        {
+          name: "Cassa",
+          navigate: "/cashdesk/allreservations",
         },
       ]);
     } else {

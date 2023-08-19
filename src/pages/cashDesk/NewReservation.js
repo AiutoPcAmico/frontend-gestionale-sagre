@@ -6,6 +6,7 @@ import { SummaryTableReservation } from "../../components/SummaryTableReservatio
 import { LoadingFS } from "../../components/LoadingFS";
 import { addCompleteReservation } from "../../apis/indexSagreApi";
 import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 function NewReservation() {
   const [reservation, setReservation] = useState({
@@ -22,6 +23,7 @@ function NewReservation() {
   const [isLoading, setIsLoading] = useState(false);
   const [date] = useState(new Date());
   const [canSave, setCanSave] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (
@@ -148,6 +150,7 @@ function NewReservation() {
         autoHideDuration: 4000,
         preventDuplicate: true,
       });
+      navigate("cashdesk/allreservations");
 
       setIsLoading(false);
     }
