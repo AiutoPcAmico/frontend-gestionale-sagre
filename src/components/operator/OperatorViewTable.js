@@ -1,31 +1,14 @@
 import CampaignIcon from "@mui/icons-material/Campaign";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MyDialogMessage } from "../MyDialogMessage";
 import { PersonalizedTable } from "../PersonalizedTable";
 import RoomServiceIcon from "@mui/icons-material/RoomService";
 
 function OperatorViewTable({ listProducts, setConfirmDelivery }) {
-  const [formattedList, setFormattedList] = useState([]);
   const [dialog, setDialog] = useState({
     isOpen: false,
     message: null,
   });
-
-  function createData(singleRes) {
-    return {
-      key: singleRes.nomeProdotto + singleRes.idPrenotazione,
-      idReservation: singleRes.idPrenotazione,
-      dateTime: singleRes.dataOra,
-      table: singleRes.tavolo,
-      quantity: singleRes.quantita,
-      delivered: singleRes.consegnate,
-      productName: singleRes.nomeProdotto,
-      isFinished: singleRes.isTerminato,
-      notes: singleRes.note,
-      name: singleRes.nominativo,
-      idProduct: singleRes.idProdotto,
-    };
-  }
 
   const columns = [
     {
@@ -109,22 +92,13 @@ function OperatorViewTable({ listProducts, setConfirmDelivery }) {
     },
   ];
 
-  useEffect(() => {
-    if (listProducts && listProducts.length > 0) {
-      const correctList = listProducts.map((single) => createData(single));
-      setFormattedList(correctList);
-    } else {
-      setFormattedList([]);
-    }
-  }, [listProducts]);
-
   return (
     <div>
       -----------------Ciao!----------------
       <p>Questo è la visualizzazione a tabelle</p>
       <PersonalizedTable
         columnsTable={columns}
-        dataTable={formattedList}
+        dataTable={listProducts}
         searchVisible={false}
       />
       <MyDialogMessage

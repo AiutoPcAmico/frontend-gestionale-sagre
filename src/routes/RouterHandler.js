@@ -44,7 +44,11 @@ function RouterHandler({ selSelectedPage }) {
         path="/pizza"
         element={
           <ProtectedRoute>
-            <GenericOperatorPage supCategory={"pizzeria"} supType={"foods"} />
+            <GenericOperatorPage
+              key={"pizzeria"}
+              supCategory={"pizzeria"}
+              supType={"foods"}
+            />
           </ProtectedRoute>
         }
       />
@@ -53,7 +57,11 @@ function RouterHandler({ selSelectedPage }) {
         path="/gastronomy"
         element={
           <ProtectedRoute>
-            <GenericOperatorPage supCategory={"cucina"} supType={"foods"} />
+            <GenericOperatorPage
+              key={"cucina"}
+              supCategory={"cucina"}
+              supType={"foods"}
+            />
           </ProtectedRoute>
         }
       />
@@ -62,7 +70,11 @@ function RouterHandler({ selSelectedPage }) {
         path="/grill"
         element={
           <ProtectedRoute>
-            <GenericOperatorPage supCategory={"griglia"} supType={"foods"} />
+            <GenericOperatorPage
+              key={"griglia"}
+              supCategory={"griglia"}
+              supType={"foods"}
+            />
           </ProtectedRoute>
         }
       />
@@ -71,7 +83,11 @@ function RouterHandler({ selSelectedPage }) {
         path="/bar"
         element={
           <ProtectedRoute>
-            <GenericOperatorPage supCategory={"bar"} supType={"beverages"} />
+            <GenericOperatorPage
+              key={"bar"}
+              supCategory={"bar"}
+              supType={"beverages"}
+            />
           </ProtectedRoute>
         }
       />
@@ -81,6 +97,7 @@ function RouterHandler({ selSelectedPage }) {
         element={
           <ProtectedRoute>
             <GenericOperatorPage
+              key={"bancone"}
               supCategory={"bancone"}
               supType={"beverages"}
             />
@@ -92,7 +109,11 @@ function RouterHandler({ selSelectedPage }) {
         path="/plate"
         element={
           <ProtectedRoute>
-            <GenericOperatorPage supCategory={"piastra"} supType={"foods"} />
+            <GenericOperatorPage
+              key={"piastra"}
+              supCategory={"piastra"}
+              supType={"foods"}
+            />
           </ProtectedRoute>
         }
       />

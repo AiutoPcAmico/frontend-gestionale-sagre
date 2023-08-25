@@ -43,3 +43,24 @@
   width: 100%;
   justify-content: space-evenly;
 }
+
+.operatorListCards {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.operatorListCards .singleCard {
+  height: 250px;
+  width: 300px;
+  margin: 10px;
+}
+
+.multipleActions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}

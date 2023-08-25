@@ -10,7 +10,7 @@ import { DialogDelivering } from "./DialogDelivering.js";
 function RealtimeOperatorComp({ category, type }) {
   const [list, setList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [viewTable, setViewTable] = useState(true);
+  const [viewTable, setViewTable] = useState(false);
   const [delivering, setDelivering] = useState({
     idReservation: null,
     idProduct: null,
@@ -79,8 +79,26 @@ function RealtimeOperatorComp({ category, type }) {
   }, [delivering]);
 
   useEffect(() => {
-    setList([]);
+    function createData(singleRes) {
+      return {
+        key: singleRes.nomeProdotto + singleRes.idPrenotazione,
+        idReservation: singleRes.idPrenotazione,
+        dateTime: singleRes.dataOra,
+        table: singleRes.tavolo,
+        quantity: singleRes.quantita,
+        delivered: singleRes.consegnate,
+        productName: singleRes.nomeProdotto,
+        isFinished: singleRes.isTerminato,
+        notes: singleRes.note,
+        name: singleRes.nominativo,
+        idProduct: singleRes.idProdotto,
+        image: singleRes.immagine,
+        type: type,
+      };
+    }
+
     async function loadData() {
+      console.log("UPDATE");
       getOfCategory(type, category).then((response) => {
         if (response.isError) {
           if (response.status === 404) {
@@ -109,16 +127,20 @@ function RealtimeOperatorComp({ category, type }) {
             autoHideDuration: 3000,
             preventDuplicate: true,
           });
-          setList(response.data.data);
+
+          const correctList = response.data.data.map((single) =>
+            createData(single)
+          );
+
+          setList(correctList);
+          setIsLoading(false);
         }
       });
     }
 
     //first render of the page,
     setIsLoading(true);
-    loadData().then(() => {
-      setIsLoading(false);
-    });
+    loadData();
 
     const interval = setInterval(async () => {
       await loadData();
@@ -163,7 +185,7 @@ function RealtimeOperatorComp({ category, type }) {
             }}
           />
         )}
-        {viewTable === false && <OperatorViewCards />}
+        {viewTable === false && <OperatorViewCards listProducts={list} />}
       </Paper>
       <DialogDelivering
         delivered={delivering.delivered}
