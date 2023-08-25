@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
-import { RealtimeOperatorComp } from "../components/operator/RealtimeOperatorComp";
+import { RealtimeOperatorComp } from "../../components/operator/RealtimeOperatorComp";
 
-function OperatorPage({ supCategory, supType }) {
+function GenericOperatorPage({ supCategory, supType }) {
   return (
     <div className="pages">
       <div className="pizzeria">
@@ -14,4 +14,4 @@ function OperatorPage({ supCategory, supType }) {
   );
 }
 
-export { OperatorPage };
+export { GenericOperatorPage };

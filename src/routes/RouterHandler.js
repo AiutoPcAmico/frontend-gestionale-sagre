@@ -6,7 +6,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { AllReservations } from "../pages/cashDesk/AllReservations.js";
 import { DetailsReservation } from "../pages/cashDesk/DetailsReservation";
 import { NewReservation } from "../pages/cashDesk/NewReservation";
-import { OperatorPage } from "../pages/OperatorPage";
+import { GenericOperatorPage } from "../pages/operator/GenericOperatorPage";
 
 function RouterHandler({ selSelectedPage }) {
   return (
@@ -44,7 +44,7 @@ function RouterHandler({ selSelectedPage }) {
         path="/pizza"
         element={
           <ProtectedRoute>
-            <OperatorPage supCategory={"pizzeria"} supType={"foods"} />
+            <GenericOperatorPage supCategory={"pizzeria"} supType={"foods"} />
           </ProtectedRoute>
         }
       />
@@ -53,7 +53,7 @@ function RouterHandler({ selSelectedPage }) {
         path="/gastronomy"
         element={
           <ProtectedRoute>
-            <OperatorPage supCategory={"cucina"} supType={"foods"} />
+            <GenericOperatorPage supCategory={"cucina"} supType={"foods"} />
           </ProtectedRoute>
         }
       />
@@ -62,7 +62,7 @@ function RouterHandler({ selSelectedPage }) {
         path="/grill"
         element={
           <ProtectedRoute>
-            <OperatorPage supCategory={"griglia"} supType={"foods"} />
+            <GenericOperatorPage supCategory={"griglia"} supType={"foods"} />
           </ProtectedRoute>
         }
       />
@@ -71,7 +71,7 @@ function RouterHandler({ selSelectedPage }) {
         path="/bar"
         element={
           <ProtectedRoute>
-            <OperatorPage supCategory={"bar"} supType={"beverages"} />
+            <GenericOperatorPage supCategory={"bar"} supType={"beverages"} />
           </ProtectedRoute>
         }
       />
@@ -80,7 +80,10 @@ function RouterHandler({ selSelectedPage }) {
         path="/drinkscounter"
         element={
           <ProtectedRoute>
-            <OperatorPage supCategory={"bancone"} supType={"beverages"} />
+            <GenericOperatorPage
+              supCategory={"bancone"}
+              supType={"beverages"}
+            />
           </ProtectedRoute>
         }
       />
@@ -89,7 +92,7 @@ function RouterHandler({ selSelectedPage }) {
         path="/plate"
         element={
           <ProtectedRoute>
-            <OperatorPage supCategory={"piastra"} supType={"foods"} />
+            <GenericOperatorPage supCategory={"piastra"} supType={"foods"} />
           </ProtectedRoute>
         }
       />

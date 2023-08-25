@@ -2,7 +2,7 @@ import { Button, Paper, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { formatDateTime } from "../../utils/dates";
 import { PickProducts } from "../../components/cashdesk/PickProducts";
-import { SummaryTableReservation } from "../../components/SummaryTableReservation";
+import { SummaryTableReservation } from "../../components/cashdesk/SummaryTableReservation";
 import { LoadingFS } from "../../components/LoadingFS";
 import { addCompleteReservation } from "../../apis/indexSagreApi";
 import { useSnackbar } from "notistack";

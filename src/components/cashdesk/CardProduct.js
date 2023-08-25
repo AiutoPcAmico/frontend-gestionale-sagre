@@ -22,7 +22,7 @@ function CardProduct({
 
   useEffect(() => {
     try {
-      setImage(require(`../images/${productImage}`));
+      setImage(require(`../../images/${productImage}`));
     } catch (error) {
       console.warn("Immagine non trovata: " + productImage);
     }

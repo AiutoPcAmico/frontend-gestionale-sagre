@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { LoadingFS } from "../LoadingFS";
 import { getAllBeverages, getAllFoods } from "../../apis/indexSagreApi";
 import { useSnackbar } from "notistack";
-import { CardProduct } from "../CardProduct";
+import { CardProduct } from "./CardProduct";
 import "../components.css";
 
 function PickProducts({ addProduct }) {
