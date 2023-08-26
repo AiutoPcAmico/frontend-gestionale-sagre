@@ -4,9 +4,7 @@ import "../components.css";
 import { DialogPickDelivering } from "./DialogPickDelivering";
 import { useSnackbar } from "notistack";
 
-function OperatorViewCards({ listProducts }) {
-  const { enqueueSnackbar } = useSnackbar();
-
+function OperatorViewCards({ listProducts, setConfirmDelivery }) {
   const [quantities, setQuantities] = useState([]);
   const [dialogPick, setDialogPick] = useState({
     isOpen: false,
@@ -38,7 +36,7 @@ function OperatorViewCards({ listProducts }) {
         listProducts.length > 0 &&
         Object.keys(quantities).map((qKey) => {
           const sum = quantities[qKey].reduce((accumulator, object) => {
-            return accumulator + object.quantity;
+            return accumulator + object.quantity - object.delivered;
           }, 0);
 
           return (
@@ -63,17 +61,8 @@ function OperatorViewCards({ listProducts }) {
           isOpen={dialogPick.isOpen}
           listOfReservations={dialogPick.listReservations}
           productName={dialogPick.productName}
-          onClose={(res) => {
-            if (res.completed) {
-              //I'll call the api to do deliver
-            } else {
-              //nothing
-              enqueueSnackbar("Nessuna azione!", {
-                variant: "default",
-                autoHideDuration: 3000,
-                preventDuplicate: true,
-              });
-            }
+          setConfirmDelivery={setConfirmDelivery}
+          onClose={() => {
             setDialogPick({
               isOpen: false,
               idProduct: null,

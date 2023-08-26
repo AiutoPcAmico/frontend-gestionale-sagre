@@ -1,11 +1,13 @@
 import { Paper, Stack, Switch, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LoadingFS } from "../LoadingFS.js";
 import { deliverProduct, getOfCategory } from "../../apis/indexSagreApi.js";
 import { useSnackbar } from "notistack";
 import { OperatorViewTable } from "./OperatorViewTable.js";
 import { OperatorViewCards } from "./OperatorViewCards.js";
 import { DialogDelivering } from "./DialogDelivering.js";
+
+//TODO: VERIFY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 function RealtimeOperatorComp({ category, type }) {
   const [list, setList] = useState([]);
@@ -22,7 +24,7 @@ function RealtimeOperatorComp({ category, type }) {
     productName: null,
   });
   const { enqueueSnackbar } = useSnackbar();
-  const millisecondsApi = 10000;
+  const millisecondsApi = 50000;
 
   async function newDeliver(result) {
     if (result.confirmed) {
@@ -54,6 +56,17 @@ function RealtimeOperatorComp({ category, type }) {
           }
         );
       }
+      loadData();
+      setDelivering({
+        idReservation: null,
+        idProduct: null,
+        productType: null,
+        quantity: null,
+        delivered: null,
+        nowDelivered: null,
+        nameUser: null,
+        productName: null,
+      });
       setIsLoading(false);
     } else {
       enqueueSnackbar("Nessuna azione eseguita. Annullo.", {
@@ -61,24 +74,24 @@ function RealtimeOperatorComp({ category, type }) {
         autoHideDuration: 3000,
         preventDuplicate: true,
       });
+      setDelivering({
+        idReservation: null,
+        idProduct: null,
+        productType: null,
+        quantity: null,
+        delivered: null,
+        nowDelivered: null,
+        nameUser: null,
+        productName: null,
+      });
     }
-    setDelivering({
-      idReservation: null,
-      idProduct: null,
-      productType: null,
-      quantity: null,
-      delivered: null,
-      nowDelivered: null,
-      nameUser: null,
-      productName: null,
-    });
   }
 
   useEffect(() => {
     console.log(delivering);
   }, [delivering]);
 
-  useEffect(() => {
+  const loadData = useCallback(() => {
     function createData(singleRes) {
       return {
         key: singleRes.nomeProdotto + singleRes.idPrenotazione,
@@ -97,47 +110,48 @@ function RealtimeOperatorComp({ category, type }) {
       };
     }
 
-    async function loadData() {
-      console.log("UPDATE");
-      getOfCategory(type, category).then((response) => {
-        if (response.isError) {
-          if (response.status === 404) {
-            enqueueSnackbar(
-              "Non sono state trovate comande. Verifica e riprova più tardi! ",
-              {
-                variant: "warning",
-                autoHideDuration: 5000,
-                preventDuplicate: true,
-              }
-            );
-          } else {
-            enqueueSnackbar(
-              "Impossibile recuperare i dati! Riprova! " +
-                response.messageError,
-              {
-                variant: "error",
-                autoHideDuration: 5000,
-                preventDuplicate: true,
-              }
-            );
-          }
-        } else {
-          enqueueSnackbar("Aggiornamento... ", {
-            variant: "success",
-            autoHideDuration: 3000,
-            preventDuplicate: true,
-          });
-
-          const correctList = response.data.data.map((single) =>
-            createData(single)
+    console.log("UPDATE");
+    getOfCategory(type, category).then((response) => {
+      if (response.isError) {
+        if (response.status === 404) {
+          enqueueSnackbar(
+            "Non sono state trovate comande. Verifica e riprova più tardi! ",
+            {
+              variant: "warning",
+              autoHideDuration: 5000,
+              preventDuplicate: true,
+            }
           );
-
-          setList(correctList);
+          setIsLoading(false);
+        } else {
+          enqueueSnackbar(
+            "Impossibile recuperare i dati! Riprova! " + response.messageError,
+            {
+              variant: "error",
+              autoHideDuration: 5000,
+              preventDuplicate: true,
+            }
+          );
           setIsLoading(false);
         }
-      });
-    }
+      } else {
+        enqueueSnackbar("Aggiornamento... ", {
+          variant: "success",
+          autoHideDuration: 3000,
+          preventDuplicate: true,
+        });
 
+        const correctList = response.data.data.map((single) =>
+          createData(single)
+        );
+
+        setList(correctList);
+        setIsLoading(false);
+      }
+    });
+  }, [category, enqueueSnackbar, type]);
+
+  useEffect(() => {
     //first render of the page,
     setIsLoading(true);
     loadData();
@@ -147,7 +161,7 @@ function RealtimeOperatorComp({ category, type }) {
     }, millisecondsApi);
 
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-  }, [category, enqueueSnackbar, type]);
+  }, [loadData]);
 
   return (
     <div style={{ width: "100%" }}>
@@ -185,8 +199,26 @@ function RealtimeOperatorComp({ category, type }) {
             }}
           />
         )}
-        {viewTable === false && <OperatorViewCards listProducts={list} />}
+        {viewTable === false && (
+          <OperatorViewCards
+            listProducts={list}
+            setConfirmDelivery={(row) => {
+              console.log(row);
+              setDelivering({
+                idReservation: row.idReservation,
+                idProduct: row.idProduct,
+                quantity: row.quantity,
+                delivered: row.delivered,
+                productType: type,
+                nameUser: row.name,
+                productName: row.productName,
+                nowDelivered: null,
+              });
+            }}
+          />
+        )}
       </Paper>
+      <LoadingFS isOpened={isLoading} />
       <DialogDelivering
         delivered={delivering.delivered}
         productName={delivering.productName}
@@ -194,7 +226,6 @@ function RealtimeOperatorComp({ category, type }) {
         name={delivering.nameUser}
         onExiting={newDeliver}
       />
-      <LoadingFS isOpened={isLoading} />
     </div>
   );
 }

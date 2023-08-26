@@ -11,16 +11,24 @@ import CampaignIcon from "@mui/icons-material/Campaign";
 import RoomServiceIcon from "@mui/icons-material/RoomService";
 
 import { useState } from "react";
+import { DialogDelivering } from "./DialogDelivering.js";
+import { useSnackbar } from "notistack";
 
 function DialogPickDelivering({
   isOpen,
   onClose,
   listOfReservations,
   productName,
+  setConfirmDelivery,
 }) {
+  const { enqueueSnackbar } = useSnackbar();
   const [dialogSecondary, setDialogSecondary] = useState({
     isOpen: false,
-    message: null,
+    productName: null,
+    name: null,
+    quantity: null,
+    delivered: null,
+    key: null,
   });
 
   const columns = [
@@ -97,10 +105,8 @@ function DialogPickDelivering({
             </div>
             <div
               onClick={() => {
-                setDialogSecondary({
-                  isOpen: true,
-                  message: notes,
-                });
+                onClose();
+                setConfirmDelivery(row);
               }}
             >
               <RoomServiceIcon color="success" />

@@ -61,6 +61,12 @@ function retrieveErrors(statusCode, data) {
       messageError = "Errore del Server.\nRiprova!";
       break;
 
+    case 503:
+      isError = true;
+      messageError =
+        "Il server non è al momento raggiungibile. Controlla la rete e riprova tra qualche minuto!";
+      break;
+
     default:
       isError = true;
       messageError =
@@ -90,7 +96,11 @@ const postLogin = async (username, password) => {
     return retrieveErrors(response.status, response.data);
   } catch (error) {
     console.log({ error });
-    return retrieveErrors(error.response.status, error.response.data.result);
+    if (error.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(error.response.status, error.response.data.result);
+    }
   }
 };
 
@@ -105,7 +115,12 @@ const getAllReservations = async () => {
 
     return retrieveErrors(response.status, response.data);
   } catch (e) {
-    return retrieveErrors(e.response.status, e.response.data.result);
+    console.log({ e });
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data.result);
+    }
   }
 };
 
@@ -130,7 +145,11 @@ const getPreparationOfReservation = async (reservationId) => {
     return retrieveErrors(response.status, response.data);
   } catch (e) {
     console.log({ e });
-    return retrieveErrors(e.response.status, e.response.data);
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data);
+    }
   }
 };
 
@@ -155,7 +174,11 @@ const getDispensingOfReservation = async (reservationId) => {
     return retrieveErrors(response.status, response.data);
   } catch (e) {
     console.log({ e });
-    return retrieveErrors(e.response.status, e.response.data);
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data);
+    }
   }
 };
 
@@ -170,7 +193,12 @@ const getAllBeverages = async () => {
 
     return retrieveErrors(response.status, response.data);
   } catch (e) {
-    return retrieveErrors(e.response.status, e.response.data.result);
+    console.log({ e });
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data.result);
+    }
   }
 };
 
@@ -185,7 +213,12 @@ const getAllFoods = async () => {
 
     return retrieveErrors(response.status, response.data);
   } catch (e) {
-    return retrieveErrors(e.response.status, e.response.data.result);
+    console.log({ e });
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data.result);
+    }
   }
 };
 
@@ -213,7 +246,12 @@ const addCompleteReservation = async (complete) => {
 
     return retrieveErrors(response.status, response.data);
   } catch (e) {
-    return retrieveErrors(e.response.status, e.response.data.result);
+    console.log({ e });
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data.result);
+    }
   }
 };
 
@@ -237,7 +275,12 @@ const getOfCategory = async (type, category) => {
     );
     return retrieveErrors(response.status, response.data);
   } catch (e) {
-    return retrieveErrors(e.response.status, e.response.data.result);
+    console.log({ e });
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data.result);
+    }
   }
 };
 
@@ -281,7 +324,12 @@ const deliverProduct = async (
     });
     return retrieveErrors(response.status, response.data);
   } catch (e) {
-    return retrieveErrors(e.response.status, e.response.data.result);
+    console.log({ e });
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data.result);
+    }
   }
 };
 
