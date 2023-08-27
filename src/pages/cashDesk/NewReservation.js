@@ -150,7 +150,7 @@ function NewReservation() {
         autoHideDuration: 4000,
         preventDuplicate: true,
       });
-      navigate("cashdesk/allreservations");
+      navigate("/cashdesk/allreservations");
 
       setIsLoading(false);
     }

@@ -122,6 +122,7 @@ function RealtimeOperatorComp({ category, type }) {
               preventDuplicate: true,
             }
           );
+          setList([]);
           setIsLoading(false);
         } else {
           enqueueSnackbar(
@@ -140,14 +141,13 @@ function RealtimeOperatorComp({ category, type }) {
           autoHideDuration: 3000,
           preventDuplicate: true,
         });
-
-        const correctList = response.data.data.map((single) =>
-          createData(single)
-        );
-
-        setList(correctList);
-        setIsLoading(false);
       }
+      const correctList = response.data.data.map((single) =>
+        createData(single)
+      );
+
+      setList(correctList);
+      setIsLoading(false);
     });
   }, [category, enqueueSnackbar, type]);
 
