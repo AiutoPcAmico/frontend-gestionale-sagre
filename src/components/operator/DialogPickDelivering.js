@@ -13,6 +13,7 @@ import RoomServiceIcon from "@mui/icons-material/RoomService";
 import { useState } from "react";
 import { DialogDelivering } from "./DialogDelivering.js";
 import { useSnackbar } from "notistack";
+import { MyDialogMessage } from "../MyDialogMessage.js";
 
 function DialogPickDelivering({
   isOpen,
@@ -22,13 +23,9 @@ function DialogPickDelivering({
   setConfirmDelivery,
 }) {
   const { enqueueSnackbar } = useSnackbar();
-  const [dialogSecondary, setDialogSecondary] = useState({
+  const [messageDialog, setMessageDialog] = useState({
     isOpen: false,
-    productName: null,
-    name: null,
-    quantity: null,
-    delivered: null,
-    key: null,
+    message: null,
   });
 
   const columns = [
@@ -93,7 +90,7 @@ function DialogPickDelivering({
               {notes && (
                 <div
                   onClick={() => {
-                    setDialogSecondary({
+                    setMessageDialog({
                       isOpen: true,
                       message: notes,
                     });
@@ -123,7 +120,7 @@ function DialogPickDelivering({
         <b></b>
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>Selezuiona le consegne desiderate</DialogContentText>
+        <DialogContentText>Seleziona le consegne desiderate</DialogContentText>
       </DialogContent>
 
       <PersonalizedTable
@@ -154,6 +151,15 @@ function DialogPickDelivering({
           Chiudi
         </Button>
       </DialogActions>
+
+      <MyDialogMessage
+        isOpen={messageDialog.isOpen}
+        text={messageDialog.message}
+        title={"Note prenotazione"}
+        returnMessage={() => {
+          setMessageDialog({ isOpen: false, message: null });
+        }}
+      />
     </Dialog>
   );
 }
