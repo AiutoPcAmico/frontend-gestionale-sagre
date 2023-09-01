@@ -71,4 +71,10 @@
     margin-top: 10px;
     width: 400px;
   }
+
+  .whiteBlockFormatted .isPaid {
+    width: 100%;
+    align-content: center;
+    margin-top: 15px;
+  }
 }

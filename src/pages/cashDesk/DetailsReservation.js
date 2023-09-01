@@ -22,6 +22,7 @@ function DetailsReservation() {
     name: "",
     dateTime: "",
     table: "",
+    isPaid: false,
   });
 
   const [dialog, setDialog] = useState({

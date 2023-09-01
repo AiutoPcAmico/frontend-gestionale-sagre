@@ -226,13 +226,13 @@ const addCompleteReservation = async (complete) => {
   const access = store.getState(sessionInfo).sessionInfo.sessionToken;
   try {
     const response = await axios.put(
-      "/reservations/addCOmpleteReservation",
+      "/reservations/addCompleteReservation",
       {
         reservation: {
           table: complete.table,
           name: complete.name,
           coverCharge: complete.coverCharge,
-          isPayed: complete.isPayed,
+          isPaid: complete.isPaid,
         },
         beverages: complete.beverages,
         foods: complete.foods,
@@ -247,6 +247,32 @@ const addCompleteReservation = async (complete) => {
     return retrieveErrors(response.status, response.data);
   } catch (e) {
     console.log({ e });
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data.result);
+    }
+  }
+};
+
+const updateIsPaid = async (isPaid, idReservation) => {
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+  try {
+    const response = await axios.post(
+      "/reservations/updateIsPaid",
+      {
+        isPaid: isPaid,
+        idReservation: idReservation,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + access,
+        },
+      }
+    );
+
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
     if (e.code === "ERR_NETWORK") {
       return retrieveErrors(503, "Network not available!");
     } else {
@@ -341,6 +367,7 @@ export {
   getAllBeverages,
   getAllFoods,
   addCompleteReservation,
+  updateIsPaid,
   getOfCategory,
   deliverProduct,
 };

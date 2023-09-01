@@ -1,4 +1,12 @@
-import { Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  FormGroup,
+  Paper,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { formatDateTime } from "../../utils/dates";
 import { PickProducts } from "../../components/cashdesk/PickProducts";
@@ -13,7 +21,7 @@ function NewReservation() {
     name: "",
     table: "",
     coverCharge: 0,
-    isPayed: true,
+    isPaid: true,
     beverages: [],
     foods: [],
   });
@@ -271,6 +279,19 @@ function NewReservation() {
             beverages={beveragesRequired}
           />
         </Paper>
+        <FormGroup>
+          <FormControlLabel
+            control={<Switch color="warning" />}
+            checked={reservation.isPaid}
+            label="Pagato"
+            onChange={(e) => {
+              setReservation((props) => ({
+                ...props,
+                isPaid: e.target.checked,
+              }));
+            }}
+          />
+        </FormGroup>
       </div>
       <Button
         variant="contained"

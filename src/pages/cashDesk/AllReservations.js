@@ -1,17 +1,25 @@
-import { Button, Typography } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  FormGroup,
+  Switch,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
-import { getAllReservations } from "../../apis/indexSagreApi";
+import { getAllReservations, updateIsPaid } from "../../apis/indexSagreApi";
 import { LoadingFS } from "../../components/LoadingFS";
 import { SnackMessage } from "../../components/SnackMessage";
 import { PersonalizedTable } from "../../components/PersonalizedTable.js";
 import SavedSearchIcon from "@mui/icons-material/SavedSearch";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 function AllReservations() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [list, setList] = useState([]);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   function createData(singleRes) {
     const totaleCompleto =
@@ -24,10 +32,39 @@ function AllReservations() {
       table: singleRes.tavolo,
       people: singleRes.coperti,
       name: singleRes.nominativo,
-      isPaied: singleRes.isPagato,
+      isPaid: singleRes.isPagato === 0 ? false : true,
       isFinished: singleRes.isConcluso,
       totalPrice: totaleCompleto,
     };
+  }
+
+  async function changePaid(isPaid, row) {
+    setIsLoading(true);
+    //finding position of id
+    const index = list.indexOf(row);
+    //cloning old Array
+    const newArr = JSON.parse(JSON.stringify(list));
+    //setting isPaid
+    newArr[index].isPaid = isPaid;
+    //saving
+    console.log(newArr[index]);
+    setList(newArr);
+
+    const status = await updateIsPaid(isPaid, row.idReservation);
+    if (status.isError) {
+      enqueueSnackbar("Errore! " + status.messageError, {
+        variant: "error",
+        autoHideDuration: 5000,
+        preventDuplicate: true,
+      });
+    } else {
+      enqueueSnackbar("Aggiornamento avvenuto con successo!", {
+        variant: "success",
+        autoHideDuration: 3000,
+        preventDuplicate: true,
+      });
+    }
+    setIsLoading(false);
   }
 
   const columns = [
@@ -74,15 +111,31 @@ function AllReservations() {
       },
     },
     {
-      id: "isPaied",
+      id: "isPaid",
       label: "Pagato",
       minWidth: 30,
       align: "center",
 
       type: "string",
-      format: (value) => {
-        if (value === 1) return <Typography color={"green"}>Si</Typography>;
-        else return <Typography color={"error"}>No</Typography>;
+      format: (value, row) => {
+        return (
+          <FormGroup>
+            <FormControlLabel
+              control={<Switch color="warning" />}
+              checked={value}
+              label={
+                value ? (
+                  <Typography color={"green"}>Pagato</Typography>
+                ) : (
+                  <Typography color={"error"}>NON Pagato</Typography>
+                )
+              }
+              onChange={(e) => {
+                changePaid(e.target.checked, row);
+              }}
+            />
+          </FormGroup>
+        );
       },
     },
 

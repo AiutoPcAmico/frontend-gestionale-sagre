@@ -11,8 +11,6 @@ import CampaignIcon from "@mui/icons-material/Campaign";
 import RoomServiceIcon from "@mui/icons-material/RoomService";
 
 import { useState } from "react";
-import { DialogDelivering } from "./DialogDelivering.js";
-import { useSnackbar } from "notistack";
 import { MyDialogMessage } from "../MyDialogMessage.js";
 
 function DialogPickDelivering({
@@ -22,7 +20,6 @@ function DialogPickDelivering({
   productName,
   setConfirmDelivery,
 }) {
-  const { enqueueSnackbar } = useSnackbar();
   const [messageDialog, setMessageDialog] = useState({
     isOpen: false,
     message: null,
