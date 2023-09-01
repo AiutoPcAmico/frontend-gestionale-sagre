@@ -7,8 +7,6 @@ import { OperatorViewTable } from "./OperatorViewTable.js";
 import { OperatorViewCards } from "./OperatorViewCards.js";
 import { DialogDelivering } from "./DialogDelivering.js";
 
-//TODO: VERIFY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 function RealtimeOperatorComp({ category, type }) {
   const [list, setList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,7 +41,7 @@ function RealtimeOperatorComp({ category, type }) {
           {
             variant: "error",
             autoHideDuration: 5000,
-            preventDuplicate: true,
+            preventDuplicate: false,
           }
         );
       } else {
@@ -52,7 +50,7 @@ function RealtimeOperatorComp({ category, type }) {
           {
             variant: "success",
             autoHideDuration: 5000,
-            preventDuplicate: true,
+            preventDuplicate: false,
           }
         );
       }
@@ -72,7 +70,7 @@ function RealtimeOperatorComp({ category, type }) {
       enqueueSnackbar("Nessuna azione eseguita. Annullo.", {
         variant: "default",
         autoHideDuration: 3000,
-        preventDuplicate: true,
+        preventDuplicate: false,
       });
       setDelivering({
         idReservation: null,
@@ -119,7 +117,7 @@ function RealtimeOperatorComp({ category, type }) {
             {
               variant: "warning",
               autoHideDuration: 5000,
-              preventDuplicate: true,
+              preventDuplicate: false,
             }
           );
           setList([]);
@@ -130,7 +128,7 @@ function RealtimeOperatorComp({ category, type }) {
             {
               variant: "error",
               autoHideDuration: 5000,
-              preventDuplicate: true,
+              preventDuplicate: false,
             }
           );
           setIsLoading(false);
@@ -139,7 +137,7 @@ function RealtimeOperatorComp({ category, type }) {
         enqueueSnackbar("Aggiornamento... ", {
           variant: "success",
           autoHideDuration: 3000,
-          preventDuplicate: true,
+          preventDuplicate: false,
         });
       }
       const correctList = response.data.data.map((single) =>

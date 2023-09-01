@@ -40,28 +40,29 @@ function AllReservations() {
 
   async function changePaid(isPaid, row) {
     setIsLoading(true);
-    //finding position of id
-    const index = list.indexOf(row);
-    //cloning old Array
-    const newArr = JSON.parse(JSON.stringify(list));
-    //setting isPaid
-    newArr[index].isPaid = isPaid;
-    //saving
-    console.log(newArr[index]);
-    setList(newArr);
 
     const status = await updateIsPaid(isPaid, row.idReservation);
     if (status.isError) {
       enqueueSnackbar("Errore! " + status.messageError, {
         variant: "error",
         autoHideDuration: 5000,
-        preventDuplicate: true,
+        preventDuplicate: false,
       });
     } else {
+      //finding position of id
+      const index = list.indexOf(row);
+      //cloning old Array
+      const newArr = JSON.parse(JSON.stringify(list));
+      //setting isPaid
+      newArr[index].isPaid = isPaid;
+      //saving
+      console.log(newArr[index]);
+      setList(newArr);
+
       enqueueSnackbar("Aggiornamento avvenuto con successo!", {
         variant: "success",
         autoHideDuration: 3000,
-        preventDuplicate: true,
+        preventDuplicate: false,
       });
     }
     setIsLoading(false);
