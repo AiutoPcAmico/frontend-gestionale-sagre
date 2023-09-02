@@ -139,12 +139,12 @@ function RealtimeOperatorComp({ category, type }) {
           autoHideDuration: 3000,
           preventDuplicate: true,
         });
-      }
-      const correctList = response.data.data.map((single) =>
-        createData(single)
-      );
+        const correctList = response.data.data.map((single) =>
+          createData(single)
+        );
 
-      setList(correctList);
+        setList(correctList);
+      }
       setIsLoading(false);
     });
   }, [category, enqueueSnackbar, type]);

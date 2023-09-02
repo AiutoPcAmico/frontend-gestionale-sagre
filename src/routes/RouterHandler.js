@@ -7,116 +7,93 @@ import { AllReservations } from "../pages/cashDesk/AllReservations.js";
 import { DetailsReservation } from "../pages/cashDesk/DetailsReservation";
 import { NewReservation } from "../pages/cashDesk/NewReservation";
 import { GenericOperatorPage } from "../pages/operator/GenericOperatorPage";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 function RouterHandler({ selSelectedPage }) {
+  const pagesFromDB = useSelector((state) => state.sessionInfo.pages);
+  const [pages, setPages] = useState([]);
+  useEffect(() => {
+    //formatting data for pages
+    if (pagesFromDB && pagesFromDB.length > 0) {
+      var formattedData = [];
+      pagesFromDB.forEach((element) => {
+        formattedData.push({
+          name: element.nome,
+          key: element.idPagina,
+          path: element.percorso,
+          type: element.tipo,
+        });
+      });
+    }
+
+    setPages(formattedData);
+  }, [pagesFromDB]);
+
   return (
     <Routes>
       <Route index element={<HomePage></HomePage>} />
       <Route path="/login" element={<SignIn></SignIn>} />
-      <Route
-        path="/cashdesk/allreservations"
-        element={
-          <ProtectedRoute>
-            <AllReservations />
-          </ProtectedRoute>
-        }
-      />
 
-      <Route
-        path="/cashdesk/reservationdetails/:id"
-        element={
-          <ProtectedRoute>
-            <DetailsReservation />
-          </ProtectedRoute>
-        }
-      />
+      {pages &&
+        pages.map((single) => {
+          console.log({ single });
+          switch (single.path) {
+            case "/cashdesk/allreservations":
+              return (
+                <Route
+                  key={single.key}
+                  path={single.path}
+                  element={
+                    <ProtectedRoute>
+                      <AllReservations />
+                    </ProtectedRoute>
+                  }
+                />
+              );
+            case "/cashdesk/reservationdetails/:id":
+              return (
+                <Route
+                  key={single.key}
+                  path={single.path}
+                  element={
+                    <ProtectedRoute>
+                      <DetailsReservation />
+                    </ProtectedRoute>
+                  }
+                />
+              );
+            case "/cashdesk/newreservation":
+              return (
+                <Route
+                  key={single.key}
+                  path={single.path}
+                  element={
+                    <ProtectedRoute>
+                      <NewReservation />
+                    </ProtectedRoute>
+                  }
+                />
+              );
 
-      <Route
-        path="/cashdesk/newreservation/"
-        element={
-          <ProtectedRoute>
-            <NewReservation />
-          </ProtectedRoute>
-        }
-      />
+            default:
+              return (
+                <Route
+                  path={single.path}
+                  element={
+                    <ProtectedRoute>
+                      <GenericOperatorPage
+                        key={single.key}
+                        supCategory={single.name}
+                        supType={single.type}
+                      />
+                    </ProtectedRoute>
+                  }
+                />
+              );
+          }
+        })}
 
-      <Route
-        path="/pizza"
-        element={
-          <ProtectedRoute>
-            <GenericOperatorPage
-              key={"pizzeria"}
-              supCategory={"pizzeria"}
-              supType={"foods"}
-            />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/gastronomy"
-        element={
-          <ProtectedRoute>
-            <GenericOperatorPage
-              key={"cucina"}
-              supCategory={"cucina"}
-              supType={"foods"}
-            />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/grill"
-        element={
-          <ProtectedRoute>
-            <GenericOperatorPage
-              key={"griglia"}
-              supCategory={"griglia"}
-              supType={"foods"}
-            />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/bar"
-        element={
-          <ProtectedRoute>
-            <GenericOperatorPage
-              key={"bar"}
-              supCategory={"bar"}
-              supType={"beverages"}
-            />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/drinkscounter"
-        element={
-          <ProtectedRoute>
-            <GenericOperatorPage
-              key={"bancone"}
-              supCategory={"bancone"}
-              supType={"beverages"}
-            />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/plate"
-        element={
-          <ProtectedRoute>
-            <GenericOperatorPage
-              key={"piastra"}
-              supCategory={"piastra"}
-              supType={"foods"}
-            />
-          </ProtectedRoute>
-        }
-      />
       <Route path="/*" element={<Error404 />} />
     </Routes>
   );

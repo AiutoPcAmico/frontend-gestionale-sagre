@@ -31,7 +31,7 @@ function retrieveErrors(statusCode, data) {
     case 403:
       //user not authorizated (or not found)
       isError = true;
-      messageError = "Username o Password errati.\nRiprova";
+      messageError = "Non autorizzato.\nRiprova";
       break;
 
     case 404:
@@ -100,6 +100,27 @@ const postLogin = async (username, password) => {
       return retrieveErrors(503, "Network not available!");
     } else {
       return retrieveErrors(error.response.status, error.response.data.result);
+    }
+  }
+};
+
+const getMyPages = async () => {
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+  console.log(access);
+  try {
+    const response = await axios.get("/roles/getMyPages", {
+      headers: {
+        Authorization: "Bearer " + access,
+      },
+    });
+
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
+    console.log({ e });
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data.result);
     }
   }
 };
@@ -282,12 +303,12 @@ const updateIsPaid = async (isPaid, idReservation) => {
 };
 
 const getOfCategory = async (type, category) => {
-  if (!type || !category) {
-    return retrieveErrors(
-      400,
-      "categoria o tipologia del prodotto non passata alla funzione!"
-    );
-  }
+  //if (!type || !category) {
+  //  return retrieveErrors(
+  //    400,
+  //    "categoria o tipologia del prodotto non passata alla funzione!"
+  //  );
+  //}
   const access = store.getState(sessionInfo).sessionInfo.sessionToken;
 
   try {
@@ -361,6 +382,7 @@ const deliverProduct = async (
 
 export {
   postLogin,
+  getMyPages,
   getAllReservations,
   getPreparationOfReservation,
   getDispensingOfReservation,

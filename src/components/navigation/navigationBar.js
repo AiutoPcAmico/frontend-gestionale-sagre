@@ -26,6 +26,7 @@ function NavigationBar() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [sessionTerminated, setSessionTerminated] = useState(false);
   const user = useSelector((state) => state.sessionInfo.user);
+  const pagesFromDB = useSelector((state) => state.sessionInfo.pages);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -58,6 +59,24 @@ function NavigationBar() {
   };
 
   useEffect(() => {
+    //formatting data for pages
+    if (pagesFromDB && pagesFromDB.length > 0) {
+      var formattedData = [];
+      pagesFromDB.forEach((element) => {
+        if (element.navVisibile) {
+          formattedData.push({
+            name: element.nome,
+            key: element.idPagina,
+            navigate: element.percorso,
+          });
+        }
+      });
+    }
+
+    setPages(formattedData);
+  }, [pagesFromDB]);
+
+  useEffect(() => {
     if (user.username) {
       setSettings([
         {
@@ -67,36 +86,6 @@ function NavigationBar() {
         {
           name: "Logout",
           navigate: "/logout",
-        },
-      ]);
-      setPages([
-        {
-          name: "Cucina",
-          navigate: "/gastronomy",
-        },
-        {
-          name: "Piastra",
-          navigate: "/plate",
-        },
-        {
-          name: "Griglia",
-          navigate: "/grill",
-        },
-        {
-          name: "Bar",
-          navigate: "/bar",
-        },
-        {
-          name: "Pizzeria",
-          navigate: "/pizza",
-        },
-        {
-          name: "Bancone",
-          navigate: "/drinkscounter",
-        },
-        {
-          name: "Cassa",
-          navigate: "/cashdesk/allreservations",
         },
       ]);
     } else {
@@ -118,7 +107,7 @@ function NavigationBar() {
         },
       ]);
     }
-  }, [user]);
+  }, [user, pagesFromDB]);
 
   return (
     <AppBar position="static">

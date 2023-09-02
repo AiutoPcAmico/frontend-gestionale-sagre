@@ -3,10 +3,14 @@ import { Alert, Box, Button, TextField } from "@mui/material";
 
 import "./pagesCSS.css";
 import logo_parrocchia from "../images/logo_parrocchia.png";
-import { postLogin } from "../apis/indexSagreApi";
+import { getMyPages, postLogin } from "../apis/indexSagreApi";
 import { Copyright } from "../components/Copyright";
 import { useDispatch } from "react-redux";
-import { setSessionDetails, setSessionUser } from "../stores/sessionInfo";
+import {
+  setSessionDetails,
+  setSessionUser,
+  setUserPages,
+} from "../stores/sessionInfo";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { SnackMessage } from "../components/SnackMessage";
@@ -37,9 +41,10 @@ function SignIn() {
       setDisabledLogin(true);
       setIsLoading(false);
     } else {
-      //if login ok, I'll save the token
+      //if login ok and he has pages, I'll save the token
       console.log("Login!");
       const user = jwtDecode(response.data.data); // decode your token here
+
       dispatch(
         setSessionDetails({
           sessionStarted: user.iat,
@@ -48,18 +53,31 @@ function SignIn() {
         })
       );
 
-      console.log({ loginData });
       dispatch(
         setSessionUser({
           username: user.username,
-          role: "admin",
+          role: user.role,
         })
       );
 
-      setSnackOpened(true);
-      await waitforme(4000);
-      setIsLoading(false);
-      navigate("/");
+      //retrieving user pages
+      const myPages = await getMyPages();
+      console.log(myPages);
+      if (myPages.isError) {
+        setErrorLogin(myPages.messageError);
+        setDisabledLogin(true);
+        setIsLoading(false);
+      } else {
+        dispatch(
+          setUserPages({
+            pages: myPages.data.data,
+          })
+        );
+        setSnackOpened(true);
+        await waitforme(4000);
+        setIsLoading(false);
+        navigate("/");
+      }
     }
   }
 

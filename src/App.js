@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
-        <NavigationBar></NavigationBar>
+        <NavigationBar key={"navbar"} />
         <RouterHandler></RouterHandler>
       </SnackbarProvider>
     </div>

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const sessionInfo = createSlice({
   name: "sessionInfo",
   initialState: {
+    pages: null,
     user: {
       username: null,
       role: null,
@@ -20,11 +21,13 @@ export const sessionInfo = createSlice({
     },
 
     setSessionUser: (state, actions) => {
-      console.log(actions.payload);
       state.user.username = actions.payload.username;
       state.user.role = actions.payload.role;
+    },
 
-      console.log({ actions });
+    setUserPages: (state, actions) => {
+      state.pages = actions.payload.pages;
+      console.log({ state });
     },
 
     destroySession: (state, actions) => {
@@ -34,12 +37,17 @@ export const sessionInfo = createSlice({
       state.sessionToken = null;
       state.sessionExpire = null;
       state.sessionStarted = null;
+      state.pages = null;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setSessionDetails, setSessionUser, destroySession } =
-  sessionInfo.actions;
+export const {
+  setSessionDetails,
+  setSessionUser,
+  setUserPages,
+  destroySession,
+} = sessionInfo.actions;
 
 export default sessionInfo.reducer;
