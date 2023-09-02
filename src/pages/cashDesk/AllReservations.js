@@ -46,7 +46,7 @@ function AllReservations() {
       enqueueSnackbar("Errore! " + status.messageError, {
         variant: "error",
         autoHideDuration: 5000,
-        preventDuplicate: false,
+        preventDuplicate: true,
       });
     } else {
       //finding position of id

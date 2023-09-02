@@ -32,14 +32,14 @@ function PickProducts({ addProduct }) {
           {
             variant: "error",
             autoHideDuration: 4000,
-            preventDuplicate: false,
+            preventDuplicate: true,
           }
         );
       } else {
         enqueueSnackbar("Bevande disponibili recuperate correttamente!", {
           variant: "success",
           autoHideDuration: 3000,
-          preventDuplicate: false,
+          preventDuplicate: true,
         });
         setDrinks(response.data.data);
       }
@@ -52,7 +52,7 @@ function PickProducts({ addProduct }) {
           {
             variant: "error",
             autoHideDuration: 4000,
-            preventDuplicate: false,
+            preventDuplicate: true,
           }
         );
         setIsLoading(false);
@@ -60,7 +60,7 @@ function PickProducts({ addProduct }) {
         enqueueSnackbar("Cibi disponibili recuperati correttamente!", {
           variant: "success",
           autoHideDuration: 3000,
-          preventDuplicate: false,
+          preventDuplicate: true,
         });
 
         setFoods(response.data.data);

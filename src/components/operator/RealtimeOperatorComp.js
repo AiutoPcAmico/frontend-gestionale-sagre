@@ -41,7 +41,7 @@ function RealtimeOperatorComp({ category, type }) {
           {
             variant: "error",
             autoHideDuration: 5000,
-            preventDuplicate: false,
+            preventDuplicate: true,
           }
         );
       } else {
@@ -50,7 +50,7 @@ function RealtimeOperatorComp({ category, type }) {
           {
             variant: "success",
             autoHideDuration: 5000,
-            preventDuplicate: false,
+            preventDuplicate: true,
           }
         );
       }
@@ -70,7 +70,7 @@ function RealtimeOperatorComp({ category, type }) {
       enqueueSnackbar("Nessuna azione eseguita. Annullo.", {
         variant: "default",
         autoHideDuration: 3000,
-        preventDuplicate: false,
+        preventDuplicate: true,
       });
       setDelivering({
         idReservation: null,
@@ -117,7 +117,7 @@ function RealtimeOperatorComp({ category, type }) {
             {
               variant: "warning",
               autoHideDuration: 5000,
-              preventDuplicate: false,
+              preventDuplicate: true,
             }
           );
           setList([]);
@@ -128,7 +128,7 @@ function RealtimeOperatorComp({ category, type }) {
             {
               variant: "error",
               autoHideDuration: 5000,
-              preventDuplicate: false,
+              preventDuplicate: true,
             }
           );
           setIsLoading(false);
@@ -137,7 +137,7 @@ function RealtimeOperatorComp({ category, type }) {
         enqueueSnackbar("Aggiornamento... ", {
           variant: "success",
           autoHideDuration: 3000,
-          preventDuplicate: false,
+          preventDuplicate: true,
         });
       }
       const correctList = response.data.data.map((single) =>

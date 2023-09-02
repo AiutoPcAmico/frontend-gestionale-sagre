@@ -73,7 +73,7 @@ function DetailsReservation() {
               {
                 variant: "warning",
                 autoHideDuration: 4000,
-                preventDuplicate: false,
+                preventDuplicate: true,
               }
             );
           } else {
@@ -83,7 +83,7 @@ function DetailsReservation() {
               {
                 variant: "error",
                 autoHideDuration: 4000,
-                preventDuplicate: false,
+                preventDuplicate: true,
               }
             );
           }
@@ -92,7 +92,7 @@ function DetailsReservation() {
           enqueueSnackbar("Preparazioni recuperate con successo!", {
             variant: "success",
             autoHideDuration: 4000,
-            preventDuplicate: false,
+            preventDuplicate: true,
           });
 
           const formattedData = response.data.data.map((single) => {
@@ -114,7 +114,7 @@ function DetailsReservation() {
             enqueueSnackbar("Nessuna erogazione associata alla prenotazione!", {
               variant: "warning",
               autoHideDuration: 4000,
-              preventDuplicate: false,
+              preventDuplicate: true,
             });
           } else {
             enqueueSnackbar(
@@ -122,7 +122,7 @@ function DetailsReservation() {
               {
                 variant: "error",
                 autoHideDuration: 4000,
-                preventDuplicate: false,
+                preventDuplicate: true,
               }
             );
           }
@@ -141,7 +141,7 @@ function DetailsReservation() {
           enqueueSnackbar("Erogazioni recuperate con successo!", {
             variant: "success",
             autoHideDuration: 4000,
-            preventDuplicate: false,
+            preventDuplicate: true,
           });
           setIsLoading(false);
         }
@@ -150,7 +150,7 @@ function DetailsReservation() {
       enqueueSnackbar("Errore: l'ID passato non è numerico!", {
         variant: "error",
         autoHideDuration: 4000,
-        preventDuplicate: false,
+        preventDuplicate: true,
       });
       setIsLoading(false);
     }

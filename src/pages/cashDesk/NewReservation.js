@@ -148,7 +148,7 @@ function NewReservation() {
         {
           variant: "error",
           autoHideDuration: 4000,
-          preventDuplicate: false,
+          preventDuplicate: true,
         }
       );
       setIsLoading(false);
@@ -156,7 +156,7 @@ function NewReservation() {
       enqueueSnackbar("Salvataggio avvenuto con successo!", {
         variant: "success",
         autoHideDuration: 4000,
-        preventDuplicate: false,
+        preventDuplicate: true,
       });
       navigate("/cashdesk/allreservations");
 
