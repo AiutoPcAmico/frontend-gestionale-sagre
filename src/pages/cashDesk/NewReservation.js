@@ -15,6 +15,7 @@ import { LoadingFS } from "../../components/LoadingFS";
 import { addCompleteReservation } from "../../apis/indexSagreApi";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import { printReceipt } from "../../utils/printReceipt";
 
 function NewReservation() {
   const [reservation, setReservation] = useState({
@@ -158,15 +159,15 @@ function NewReservation() {
         autoHideDuration: 4000,
         preventDuplicate: true,
       });
+
+      //printing the Receipt
+      printReceipt();
+
       navigate("/cashdesk/allreservations");
 
       setIsLoading(false);
     }
   }
-
-  useEffect(() => {
-    console.log({ reservation, foodsRequired, beveragesRequired });
-  }, [reservation, foodsRequired, beveragesRequired]);
 
   return (
     <div className="pages">
@@ -301,6 +302,23 @@ function NewReservation() {
         }}
       >
         Conferma la comanda
+      </Button>
+      <Button
+        variant="contained"
+        disabled={!canSave}
+        onClick={() => {
+          const foodsInt = JSON.parse(JSON.stringify(foodsRequired));
+          const beveragesInt = JSON.parse(JSON.stringify(beveragesRequired));
+          printReceipt(
+            foodsInt.concat(beveragesInt),
+            reservation.name,
+            reservation.table,
+            reservation.isPaid,
+            date
+          );
+        }}
+      >
+        Stampa la ricevuta non fiscale
       </Button>
       <LoadingFS isOpened={isLoading} />
     </div>
