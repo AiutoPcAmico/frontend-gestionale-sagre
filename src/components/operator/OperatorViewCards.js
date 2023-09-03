@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { CardsOperators } from "./CardsOperators";
 import "../components.css";
 import { DialogPickDelivering } from "./DialogPickDelivering";
-import { useSnackbar } from "notistack";
 
 function OperatorViewCards({ listProducts, setConfirmDelivery }) {
   const [quantities, setQuantities] = useState([]);
@@ -14,9 +13,7 @@ function OperatorViewCards({ listProducts, setConfirmDelivery }) {
     listReservations: null,
   });
 
-  useEffect(() => {
-    console.log(Object(quantities));
-  }, [quantities]);
+ 
 
   useEffect(() => {
     if (listProducts && listProducts.length > 0) {
@@ -25,7 +22,6 @@ function OperatorViewCards({ listProducts, setConfirmDelivery }) {
         return prev;
       }, {});
 
-      console.log(typeof result);
       setQuantities(result);
     }
   }, [listProducts]);

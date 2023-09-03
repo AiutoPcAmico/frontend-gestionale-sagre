@@ -83,7 +83,6 @@ function printReceipt(list, name, tableInfo, isPaidBool, dateTimeRes) {
   doc.addFont("courier");
   doc.setFont("courier");
   doc.setFontSize(9);
-  console.log(doc.getFontList());
   doc.text(0, 0, resultingString);
   doc.autoPrint();
   doc.output("dataurlnewwindow");

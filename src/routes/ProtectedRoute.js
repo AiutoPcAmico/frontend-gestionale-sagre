@@ -11,9 +11,7 @@ function ProtectedRoute({ children }) {
 
   var expireDate = new Date(0);
   expireDate.setUTCSeconds(expireJWT);
-  //console.log(expireDate);
   const nowDate = new Date();
-  //console.log(nowDate);
 
   var expiredToken = false;
   if (nowDate.getTime() > expireDate.getTime()) {
@@ -42,8 +40,6 @@ function ProtectedRoute({ children }) {
   if (!access) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-
-  //console.log(children);
 
   return children;
 }

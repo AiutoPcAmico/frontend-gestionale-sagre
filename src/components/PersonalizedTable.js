@@ -25,7 +25,6 @@ function PersonalizedTable({ dataTable, columnsTable, searchVisible = true }) {
 
   useEffect(() => {
     setPage(0);
-    console.log("filtered: " + search);
   }, [search]);
 
   return (

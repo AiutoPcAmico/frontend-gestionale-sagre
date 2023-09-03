@@ -37,7 +37,6 @@ function RouterHandler({ selSelectedPage }) {
 
       {pages &&
         pages.map((single) => {
-          console.log({ single });
           switch (single.path) {
             case "/cashdesk/allreservations":
               return (

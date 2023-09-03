@@ -56,7 +56,6 @@ function AllReservations() {
       //setting isPaid
       newArr[index].isPaid = isPaid;
       //saving
-      console.log(newArr[index]);
       setList(newArr);
 
       enqueueSnackbar("Aggiornamento avvenuto con successo!", {

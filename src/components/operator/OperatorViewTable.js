@@ -94,8 +94,6 @@ function OperatorViewTable({ listProducts, setConfirmDelivery }) {
 
   return (
     <div>
-      -----------------Ciao!----------------
-      <p>Questo è la visualizzazione a tabelle</p>
       <PersonalizedTable
         columnsTable={columns}
         dataTable={listProducts}

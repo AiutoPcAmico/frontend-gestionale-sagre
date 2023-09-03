@@ -27,7 +27,6 @@ function RealtimeOperatorComp({ category, type }) {
   async function newDeliver(result) {
     if (result.confirmed) {
       setIsLoading(true);
-      console.log("nuovo delivering! " + result.values);
       const resultUpdating = await deliverProduct(
         delivering.productType,
         result.values,
@@ -85,10 +84,6 @@ function RealtimeOperatorComp({ category, type }) {
     }
   }
 
-  useEffect(() => {
-    console.log(delivering);
-  }, [delivering]);
-
   const loadData = useCallback(() => {
     function createData(singleRes) {
       return {
@@ -108,7 +103,6 @@ function RealtimeOperatorComp({ category, type }) {
       };
     }
 
-    console.log("UPDATE");
     getOfCategory(type, category).then((response) => {
       if (response.isError) {
         if (response.status === 404) {
@@ -183,7 +177,6 @@ function RealtimeOperatorComp({ category, type }) {
           <OperatorViewTable
             listProducts={list}
             setConfirmDelivery={(row) => {
-              console.log(row);
               setDelivering({
                 idReservation: row.idReservation,
                 idProduct: row.idProduct,
@@ -201,7 +194,6 @@ function RealtimeOperatorComp({ category, type }) {
           <OperatorViewCards
             listProducts={list}
             setConfirmDelivery={(row) => {
-              console.log(row);
               setDelivering({
                 idReservation: row.idReservation,
                 idProduct: row.idProduct,

@@ -6,7 +6,7 @@ function GenericOperatorPage({ supCategory, supType }) {
     <div className="pages">
       <div className="pizzeria">
         <div className="paddedPage">
-          <Typography fontSize={"16px"}>Comande {supCategory}</Typography>
+          <Typography fontSize={"1.5em"}>Comande {supCategory}</Typography>
           <RealtimeOperatorComp category={supCategory} type={supType} />
         </div>
       </div>

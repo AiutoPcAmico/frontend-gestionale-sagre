@@ -27,7 +27,6 @@ export const sessionInfo = createSlice({
 
     setUserPages: (state, actions) => {
       state.pages = actions.payload.pages;
-      console.log({ state });
     },
 
     destroySession: (state, actions) => {

@@ -106,7 +106,6 @@ const postLogin = async (username, password) => {
 
 const getMyPages = async () => {
   const access = store.getState(sessionInfo).sessionInfo.sessionToken;
-  console.log(access);
   try {
     const response = await axios.get("/roles/getMyPages", {
       headers: {

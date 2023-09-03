@@ -32,7 +32,6 @@ function SignIn() {
   });
 
   async function callLogin() {
-    console.log("Logging");
     setIsLoading(true);
     const response = await postLogin(loginData.username, loginData.password);
     if (response.isError) {
@@ -62,7 +61,6 @@ function SignIn() {
 
       //retrieving user pages
       const myPages = await getMyPages();
-      console.log(myPages);
       if (myPages.isError) {
         setErrorLogin(myPages.messageError);
         setDisabledLogin(true);

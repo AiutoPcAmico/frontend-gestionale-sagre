@@ -32,9 +32,11 @@ function NewReservation() {
   const [isLoading, setIsLoading] = useState(false);
   const [date] = useState(new Date());
   const [canSave, setCanSave] = useState(false);
+  const [alreadyPrinted, setAlreadyPrinted] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setAlreadyPrinted(false);
     if (
       reservation.name === "" ||
       reservation.table === "" ||
@@ -160,9 +162,6 @@ function NewReservation() {
         preventDuplicate: true,
       });
 
-      //printing the Receipt
-      printReceipt();
-
       navigate("/cashdesk/allreservations");
 
       setIsLoading(false);
@@ -260,7 +259,7 @@ function NewReservation() {
           </div>
         </Paper>
         <Paper className="whiteBlockFormatted">
-          <h3>Dettagli Prenotazione</h3>
+          <h3>Seleziona i prodotti</h3>
           <div>
             <PickProducts
               addProduct={(product) => {
@@ -294,32 +293,37 @@ function NewReservation() {
           />
         </FormGroup>
       </div>
-      <Button
-        variant="contained"
-        disabled={!canSave}
-        onClick={() => {
-          sendData();
-        }}
-      >
-        Conferma la comanda
-      </Button>
-      <Button
-        variant="contained"
-        disabled={!canSave}
-        onClick={() => {
-          const foodsInt = JSON.parse(JSON.stringify(foodsRequired));
-          const beveragesInt = JSON.parse(JSON.stringify(beveragesRequired));
-          printReceipt(
-            foodsInt.concat(beveragesInt),
-            reservation.name,
-            reservation.table,
-            reservation.isPaid,
-            date
-          );
-        }}
-      >
-        Stampa la ricevuta non fiscale
-      </Button>
+      <div className="buttonsNew">
+        <Button
+          variant="contained"
+          disabled={!canSave}
+          onClick={() => {
+            setAlreadyPrinted(true);
+            const foodsInt = JSON.parse(JSON.stringify(foodsRequired));
+            const beveragesInt = JSON.parse(JSON.stringify(beveragesRequired));
+            printReceipt(
+              foodsInt.concat(beveragesInt),
+              reservation.name,
+              reservation.table,
+              reservation.isPaid,
+              date
+            );
+          }}
+        >
+          Stampa la ricevuta non fiscale
+        </Button>
+
+        <Button
+          style={{ marginTop: "10px" }}
+          variant="contained"
+          disabled={!canSave || !alreadyPrinted}
+          onClick={() => {
+            sendData();
+          }}
+        >
+          Conferma la comanda
+        </Button>
+      </div>
       <LoadingFS isOpened={isLoading} />
     </div>
   );

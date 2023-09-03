@@ -77,4 +77,11 @@
     align-content: center;
     margin-top: 15px;
   }
+
+  .buttonsNew {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 }

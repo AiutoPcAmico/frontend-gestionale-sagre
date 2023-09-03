@@ -214,8 +214,8 @@ function DetailsReservation() {
   return (
     <div className="pages">
       <div className="paddedPage ">
-        Dettagli prenotazione
-        <p>{params.id}</p>
+        <Typography fontSize={"1.5em"}>Dettagli Prenotazione</Typography>
+
         <Paper className="whiteBlockFormatted">
           <div className="">
             <div className="values">
