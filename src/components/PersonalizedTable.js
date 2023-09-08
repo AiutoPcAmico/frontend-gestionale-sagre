@@ -90,9 +90,11 @@ function PersonalizedTable({ dataTable, columnsTable, searchVisible = true }) {
         rowsPerPageOptions={[5, 10, 15]}
         component="div"
         count={
-          dataTable?.filter((row) => {
-            return row.name.toLowerCase().includes(search.toLowerCase());
-          }).length || 0
+          (dataTable &&
+            dataTable.filter((row) => {
+              return row.name.toLowerCase().includes(search.toLowerCase());
+            }).length) ||
+          0
         }
         rowsPerPage={rowsPerPage}
         page={page}
