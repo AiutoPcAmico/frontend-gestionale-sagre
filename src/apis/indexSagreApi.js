@@ -242,6 +242,26 @@ const getAllFoods = async () => {
   }
 };
 
+const getAllCategories = async () => {
+  const access = store.getState(sessionInfo).sessionInfo.sessionToken;
+  try {
+    const response = await axios.get("/categories/allCategories", {
+      headers: {
+        Authorization: "Bearer " + access,
+      },
+    });
+
+    return retrieveErrors(response.status, response.data);
+  } catch (e) {
+    console.log({ e });
+    if (e.code === "ERR_NETWORK") {
+      return retrieveErrors(503, "Network not available!");
+    } else {
+      return retrieveErrors(e.response.status, e.response.data.result);
+    }
+  }
+};
+
 const addCompleteReservation = async (complete) => {
   const access = store.getState(sessionInfo).sessionInfo.sessionToken;
   try {
@@ -387,6 +407,7 @@ export {
   getDispensingOfReservation,
   getAllBeverages,
   getAllFoods,
+  getAllCategories,
   addCompleteReservation,
   updateIsPaid,
   getOfCategory,

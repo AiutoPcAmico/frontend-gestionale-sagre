@@ -32,8 +32,8 @@ function RouterHandler({ selSelectedPage }) {
 
   return (
     <Routes>
-      <Route index element={<HomePage></HomePage>} />
-      <Route path="/login" element={<SignIn></SignIn>} />
+      <Route key={"index"} index element={<HomePage></HomePage>} />
+      <Route key={"login"} path="/login" element={<SignIn></SignIn>} />
 
       {pages &&
         pages.map((single) => {
@@ -79,6 +79,7 @@ function RouterHandler({ selSelectedPage }) {
               return (
                 <Route
                   path={single.path}
+                  key={single.key}
                   element={
                     <ProtectedRoute>
                       <GenericOperatorPage
@@ -93,7 +94,7 @@ function RouterHandler({ selSelectedPage }) {
           }
         })}
 
-      <Route path="/*" element={<Error404 />} />
+      <Route key={"404"} path="/*" element={<Error404 />} />
     </Routes>
   );
 }

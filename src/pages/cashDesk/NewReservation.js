@@ -168,6 +168,10 @@ function NewReservation() {
     }
   }
 
+  useEffect(() => {
+    console.log({ foodsRequired, beveragesRequired, reservation });
+  }, [foodsRequired, beveragesRequired, reservation]);
+
   return (
     <div className="pages">
       <div className="paddedPage">
