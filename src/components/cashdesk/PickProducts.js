@@ -5,7 +5,11 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
 import { LoadingFS } from "../LoadingFS";
-import { getAllBeverages, getAllFoods } from "../../apis/indexSagreApi";
+import {
+  getAllBeverages,
+  getAllCategories,
+  getAllFoods,
+} from "../../apis/indexSagreApi";
 import { useSnackbar } from "notistack";
 import { CardProduct } from "./CardProduct";
 import "../components.css";
@@ -14,6 +18,7 @@ function PickProducts({ addProduct }) {
   const [expanded, setExpanded] = useState(false);
   const [foods, setFoods] = useState([]);
   const [drinks, setDrinks] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -22,8 +27,30 @@ function PickProducts({ addProduct }) {
   };
 
   useEffect(() => {
-    //retrieving data
     setIsLoading(true);
+    //retrieving categories
+    getAllCategories().then((response) => {
+      if (response.isError) {
+        enqueueSnackbar(
+          "Impossibile recuperare le categorie dei prodotti! " +
+            response.messageError,
+          {
+            variant: "error",
+            autoHideDuration: 4000,
+            preventDuplicate: true,
+          }
+        );
+      } else {
+        enqueueSnackbar("Categorie recuperate correttamente!", {
+          variant: "success",
+          autoHideDuration: 3000,
+          preventDuplicate: true,
+        });
+        setCategories(response.data.data);
+      }
+    });
+
+    //retrieving data
     getAllBeverages().then((response) => {
       if (response.isError) {
         enqueueSnackbar(
@@ -71,6 +98,80 @@ function PickProducts({ addProduct }) {
 
   return (
     <div>
+      {categories &&
+        categories.map((singleCategory) => {
+          return (
+            <Accordion
+              expanded={expanded === singleCategory.idCategoria}
+              onChange={handleChange(singleCategory.idCategoria)}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                id="panel1bh-header"
+              >
+                <Typography sx={{ width: "33%", flexShrink: 0 }}>
+                  {singleCategory.nomeCategoria}
+                </Typography>
+                <Typography sx={{ color: "text.secondary" }}>
+                  Seleziona i prodotti desiderati
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div className="listOfProduct">
+                  {foods.length > 0 &&
+                    foods
+                      .filter(
+                        (el) => el.idCategoria === singleCategory.idCategoria
+                      )
+                      .map((single) => {
+                        return (
+                          <CardProduct
+                            key={single.idCibo}
+                            title={single.nome}
+                            description={single?.descrizione}
+                            price={parseFloat(single?.prezzo)}
+                            productImage={single.immagine}
+                            productId={single.idCibo}
+                            onAdd={(food) => {
+                              addProduct({
+                                type: "food",
+                                element: food,
+                              });
+                            }}
+                          />
+                        );
+                      })}
+
+                  {drinks.length > 0 &&
+                    drinks
+                      .filter(
+                        (el) => el.idCategoria === singleCategory.idCategoria
+                      )
+                      .map((single) => {
+                        return (
+                          <CardProduct
+                            key={single.idBevanda}
+                            title={single.nomeBevanda}
+                            description={single?.descrizione}
+                            price={parseFloat(single?.prezzo)}
+                            productImage={single.immagine}
+                            productId={single.idBevanda}
+                            onAdd={(drink) => {
+                              addProduct({
+                                type: "beverage",
+                                element: drink,
+                              });
+                            }}
+                          />
+                        );
+                      })}
+                </div>
+              </AccordionDetails>
+            </Accordion>
+          );
+        })}
+      {/*
       <Accordion
         expanded={expanded === "panel1"}
         onChange={handleChange("panel1")}
@@ -147,7 +248,7 @@ function PickProducts({ addProduct }) {
           </div>
         </AccordionDetails>
       </Accordion>
-
+*/}
       <LoadingFS isOpened={isLoading} />
     </div>
   );
