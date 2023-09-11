@@ -23,10 +23,14 @@
 **01/09/2023**  -   Both        -   2 hours\
 **02/09/2023**  -   Both        -   3 hours\
 **03/09/2023**  -   Frontend    -   3,5 hours\
+**09/09/2023**  -   Hardware.   -   4 hours\
+**10/09/2023**  -   Hardware.   -   4 hours\
+**11/09/2023**  -   Hardware    -   4 hours\
 
-## Total hours: 45,5
+## Total hours: 57,5
 
-**Only Frontend:**  6 hours
-**Only Backend:**   19,5 hours
-**Both:**           20 hours
-*Updated 03/09/2023 at 23.39*
+**Only Frontend:**  6 hours\
+**Only Backend:**   19,5 hours\
+**Both:**           20 hours\
+**Hardware:**       12 hours\
+*Updated 12/09/2023 at 00.15*
