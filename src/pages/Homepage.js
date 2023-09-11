@@ -5,13 +5,18 @@ function HomePage() {
   const name = user.username;
   return (
     <div>
-      <h2>Homepage</h2>
-      <div>Pippo</div>
+      <h2>Benvenuto!</h2>
+      <div>Questo è il gestionale delle sagre dell'Oratorio di Cividate!</div>
       <div>
-        <h3>Benvenuto!</h3>
-        <h2>{`il tuo nome è ${name}`}</h2>
+        <p>Al momento risulti {name ? "loggato" : " non ancora loggato"}</p>
+        {name && <p>Seleziona, dal menu superiore, la postazione associata</p>}
+        {!name && (
+          <p>
+            Per accedere, seleziona l'icona grigia in alto a destra e premi su
+            login!
+          </p>
+        )}
       </div>
-      <p>An unuseful page, that I'm using as placeholder</p>
     </div>
   );
 }
